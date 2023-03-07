@@ -37,10 +37,8 @@ tf = TfidfVectorizer(analyzer='word', ngram_range=(1, 3),
 tfidf_matrix_places = tf.fit_transform(
     new_places_df['features__properties__kinds'])
 
-tfidf_matrix_user = tf.transform(user_df['features__properties__kinds'])
-
 # Finding cosine similarities
-cosine_similarities = linear_kernel(tfidf_matrix_places, tfidf_matrix_user)
+cosine_similarities = linear_kernel(tfidf_matrix_places, tfidf_matrix_places)
 results = {}
 
 # Comparing each place with every other place
