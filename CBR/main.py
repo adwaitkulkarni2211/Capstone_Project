@@ -20,7 +20,8 @@ new_places_df = pd.DataFrame(list(places_data))
 ratings_df = pd.DataFrame(list(ratings_data))
 
 # Will generate recommendations for this user
-userid = 236
+print("Enter user id to get recommendations: ")
+userid = int(input())
 
 # Selecting all the rows of this userid
 user_ratings_df = ratings_df[ratings_df['userid'] == userid]
