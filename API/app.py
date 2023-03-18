@@ -102,6 +102,10 @@ def cf():
         enumerate(list(df_places.set_index(
             'features__id').loc[place_user_mat.index].features__properties__name))
     }
+    # df_places
+    def place(name):
+        return df_places.loc[df_places['features__properties__name'] == name]['features__id'].tolist()[0]
+
     # transform matrix to scipy sparse matrix
     place_user_mat_sparse = csr_matrix(place_user_mat.values)
 
@@ -189,7 +193,8 @@ def cf():
         for i, (idx, dist) in enumerate(raw_recommends):
             # print('{0}: {1}, with distance of {2}'.format(
             #     i+1, reverse_mapper[idx], dist))
-            ls.append(reverse_mapper[idx])
+            dict = {'name':reverse_mapper[idx], 'placeId':place(reverse_mapper[idx])}
+            ls.append(dict)
 
 
     # my_favorite = 'COEP Auditorium'
@@ -271,7 +276,8 @@ def cbr():
             for rec in recs:
                 if rec[1] not in recs_set:
                     recs_set.add(rec[1])
-                    ls.append(item(rec[1]))
+                    dict = {'name':item(rec[1]), 'placeId':int(rec[1])}
+                    ls.append(dict)
             # print()
     
     return jsonify(ls)
