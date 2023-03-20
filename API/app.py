@@ -23,6 +23,15 @@ db = client["TripPlanner"]
 def home():
     return 'Welcome to CBR API!'
 
+@app.route('/search', methods=['GET'])
+def search():
+    term = request.args.get('term')
+    places_data = db["new_places"]
+    places_data.create_index([("features__properties__name", "text"), ("features__properties__kinds", "text")])
+    results = places_data.find({"$text": {"$search":term}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
+    for result in results:
+        return str(result)
+
 @app.route('/cf',methods=['GET'])
 def cf():
     location = request.args.get('location',type=str)
@@ -281,6 +290,8 @@ def cbr():
             # print()
     
     return jsonify(ls)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
