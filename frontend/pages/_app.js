@@ -1,4 +1,3 @@
-import "@/styles/globals.css";
 import "../styles/signupStyles.css";
 import "../styles/VisitedPlaces.css";
 
