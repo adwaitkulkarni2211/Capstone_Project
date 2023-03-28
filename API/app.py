@@ -6,12 +6,16 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import csr_matrix
 import pymongo
+import json
+from bson import json_util
 import os
 import pandas as pd
 from dotenv import load_dotenv
+from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 # Connecting to db
 mongo_uri = os.getenv('MONGO_URI')
@@ -23,14 +27,21 @@ db = client["TripPlanner"]
 def home():
     return 'Welcome to CBR API!'
 
-@app.route('/search', methods=['GET'])
-def search():
-    term = request.args.get('term')
+@app.route('/search/<term>', methods=['GET'])
+def search(term):
+    # term = request.args.get('term')
+    print("SEARCH TERM: ", term)
     places_data = db["new_places"]
     places_data.create_index([("features__properties__name", "text"), ("features__properties__kinds", "text")])
     results = places_data.find({"$text": {"$search":term}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
+    
+    # Convert the MongoDB document objects to JSON format
+    json_results = []
     for result in results:
-        return str(result)
+        json_results.append(json.loads(json_util.dumps(result)))
+
+    # Return the search results as JSON
+    return jsonify(json_results)
 
 @app.route('/cf',methods=['GET'])
 def cf():
