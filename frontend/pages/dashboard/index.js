@@ -42,7 +42,7 @@ const dashboard = () => {
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
                 adjective
-                {getPlaceData(place.placeId)}
+                {/* {getPlaceData(place.placeId)} */}
               </Typography>
               <Typography variant="body2">
                 well meaning and kindly.
