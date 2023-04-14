@@ -27,6 +27,14 @@ db = client["TripPlanner"]
 def home():
     return 'Welcome to CBR API!'
 
+@app.route('/place/<id>', methods=['GET'])
+def placeInfo(id):
+    places_data = db["new_places"]
+    results = places_data.find_one({"features__id": int(id)})
+    results['_id'] = str(results['_id'])
+    results_dict = json.loads(json.dumps(results, default=str))
+    return results_dict
+
 @app.route('/search/<term>', methods=['GET'])
 def search(term):
     # term = request.args.get('term')
