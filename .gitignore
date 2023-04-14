@@ -36,3 +36,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Ignoring files in Node_API
+Node_API/node_modules
