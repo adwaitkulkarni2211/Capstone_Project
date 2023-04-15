@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import checkAuth from "@/components/checkAuth/checkAuth";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -34,33 +35,41 @@ const dashboard = () => {
     };
     fetchRec();
   }, [userid]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const newData = [];
       for (const place of rec) {
-        const response = await fetch(`http://localhost:5000/place/${place.placeId}`);
+        const response = await fetch(
+          `http://localhost:5000/place/${place.placeId}`
+        );
         const placeData = await response.json();
         newData.push({ placeData });
       }
       // setData((prevData) => [...prevData, ...newData]);
-      setData((prevData) => [...prevData, ...newData.filter((item) => !prevData.some((prevItem) => prevItem.placeId === item.placeId))]);
+      setData((prevData) => [
+        ...prevData,
+        ...newData.filter(
+          (item) =>
+            !prevData.some((prevItem) => prevItem.placeId === item.placeId)
+        ),
+      ]);
     };
     if (rec.length > 0) {
       fetchData();
     }
   }, [rec]);
-  
+
   return (
     <>
-    {console.log(data)}
+      {console.log(data)}
       <Box sx={{ minWidth: 275 }}>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {data.map((item,index) => (
+          {data.map((item, index) => (
             <Grid item xs={2} sm={4} md={4} key={index}>
               {/* {console.log(item)} */}
               <Item>
@@ -101,4 +110,4 @@ const dashboard = () => {
 
 const getPlaceData = (id) => {};
 
-export default dashboard;
+export default checkAuth(dashboard);
