@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
+import checkAuth from "@/components/checkAuth/checkAuth";
 
 const VisitedPlaces = () => {
   const [place, setPlace] = useState("");
@@ -58,7 +59,9 @@ const VisitedPlaces = () => {
         <ul className="search-results">
           {searchResults.map((result) => (
             <li key={result._id}>
-              <Button onClick={() => handleAdd(result)}>{result.features__properties__name}</Button>
+              <Button onClick={() => handleAdd(result)}>
+                {result.features__properties__name}
+              </Button>
             </li>
           ))}
         </ul>
@@ -77,4 +80,4 @@ const VisitedPlaces = () => {
   );
 };
 
-export default VisitedPlaces;
+export default checkAuth(VisitedPlaces);
