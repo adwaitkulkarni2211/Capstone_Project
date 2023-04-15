@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import checkAuth from "@/components/checkAuth/checkAuth";
 import { signout } from "@/api/authAPICalls";
 import { useRouter } from "next/router";
@@ -37,6 +39,7 @@ const dashboard = () => {
     };
     fetchRec();
   }, [userid]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,51 +75,54 @@ const dashboard = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleSignout}>
+        <Button variant="contained" onClick={handleSignout}>
         Sign Out
       </Button>
-      {console.log(data)}
-      <Box sx={{ minWidth: 275 }}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {data.map((item, index) => (
-            <Grid item xs={2} sm={4} md={4} key={index}>
-              {/* {console.log(item)} */}
-              <Item>
-                <Card variant="outlined">
-                  {" "}
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 14 }}
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      Your recommendations
-                    </Typography>
-                    <Typography variant="h5" component="div">
-                      {item.placeData.features__properties__name}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {item.placeData.features__properties__kinds}
-                    </Typography>
-                    <Typography variant="body2">
-                      well meaning and kindly.
-                      <br />
-                      {'"a benevolent smile"'}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Item>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      {/* {console.log(data)} */}
+      <div style={{paddingRight:'15rem', paddingLeft:'15rem'}}>
+        <Box sx={{ minWidth: 275 }}>
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
+            {data.map((item,  index) => (
+              <Grid item xs={2} sm={4} md={4} key={index}>
+                {/* {console.log(item)} */}
+                <Item>
+                  <Card variant="outlined">
+                    {" "}
+                    <CardContent>
+                      <Stack spacing={1} alignItems="center">
+                        <Stack direction="row" spacing={1}>
+                          {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
+                          {item.placeData.features__properties__kinds
+                            .split(",")
+                            .map((kinds) => (
+                              <Chip
+                                label={kinds}
+                                color="success"
+                                size="small"
+                              />
+                            ))}
+                        </Stack>
+                      </Stack>
+                      <Typography variant="body2">
+                        well meaning and kindly.
+                        <br />
+                        {'"a benevolent smile"'}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Learn More</Button>
+                    </CardActions>
+                  </Card>
+                </Item>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </div>
     </>
   );
 };
