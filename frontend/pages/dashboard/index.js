@@ -40,7 +40,6 @@ const dashboard = () => {
     fetchRec();
   }, [userid]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       const newData = [];
@@ -75,24 +74,27 @@ const dashboard = () => {
 
   return (
     <>
-        <Button variant="contained" onClick={handleSignout}>
+      <Button variant="contained" onClick={handleSignout}>
         Sign Out
       </Button>
       {/* {console.log(data)} */}
-      <div style={{paddingRight:'15rem', paddingLeft:'15rem'}}>
+      <div style={{ paddingRight: "15rem", paddingLeft: "15rem" }}>
         <Box sx={{ minWidth: 275 }}>
           <Grid
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            {data.map((item,  index) => (
+            {data.map((item, index) => (
               <Grid item xs={2} sm={4} md={4} key={index}>
                 {/* {console.log(item)} */}
                 <Item>
                   <Card variant="outlined">
                     {" "}
                     <CardContent>
+                      <Typography variant="h5" component="div">
+                        {item.placeData.features__properties__name}
+                      </Typography>
                       <Stack spacing={1} alignItems="center">
                         <Stack direction="row" spacing={1}>
                           {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
