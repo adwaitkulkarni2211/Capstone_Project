@@ -1,48 +1,40 @@
 import { useState } from "react";
 import { TextField, Button, Typography, Link } from "@material-ui/core";
-import { signup } from "../../api/authAPICalls";
+import { authenticate, signin } from "../../api/authAPICalls";
+import { useRouter } from "next/router";
 import ErrorMessage from "../../components/messages/ErrorMessage";
-import SuccessMessage from "@/components/messages/SuccessMessage";
 
-const Signup = () => {
-  const [name, setName] = useState("");
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleNameChange = (e) => setName(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
+  const router = useRouter();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup({ name, email, password })
+    signin({ email, password })
       .then((data) => {
         if (data.error) {
           setError(data.error);
-          setSuccess(false);
         } else {
-          setSuccess("You have signed up successfully!");
+          authenticate(data, () => {
+            router.push("/dashboard");
+          });
         }
       })
-      .catch(console.log("ERR IN SIGNUP"));
+      .catch(console.log("SIGN IN REQUEST FAILED."));
   };
 
-  const SignupForm = () => {
+  const SigninForm = () => {
     return (
       <form onSubmit={handleSubmit} className="signup-form">
         <Typography variant="h5" gutterBottom>
-          Sign Up
+          Sign In
         </Typography>
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={name}
-          onChange={handleNameChange}
-        />
         <TextField
           label="Email"
           variant="outlined"
@@ -61,12 +53,12 @@ const Signup = () => {
           onChange={handlePasswordChange}
         />
         <Button type="submit" variant="contained" color="primary">
-          Sign Up
+          Sign In
         </Button>
         <Typography variant="body2" style={{ marginTop: "16px" }}>
-          Already have an account?{" "}
-          <Link href="/signin" color="primary">
-            Login instead
+          Don't have an Account?{" "}
+          <Link href="/signup" color="primary">
+            Sign Up Here
           </Link>
         </Typography>
       </form>
@@ -75,11 +67,10 @@ const Signup = () => {
 
   return (
     <>
-      {SignupForm()}
+      {SigninForm()}
       <ErrorMessage message={error} />
-      <SuccessMessage message={success} />
     </>
   );
 };
 
-export default Signup;
+export default Signin;
