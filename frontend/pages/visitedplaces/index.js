@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 import checkAuth from "@/components/checkAuth/checkAuth";
+import FormDialog from "@/components/dialogs/FormDialog";
 
 const VisitedPlaces = () => {
   const [place, setPlace] = useState("");
@@ -19,21 +20,45 @@ const VisitedPlaces = () => {
     }
   };
 
-  const handleAdd = (result) => {
-    const newVisitedPlaces = [...visitedPlaces, result];
+  const handleAdd = (place, rating) => {
+    const newVisitedPlaces = [
+      ...visitedPlaces,
+      { place: place, rating: rating },
+    ];
     setVisitedPlaces(newVisitedPlaces);
-    setSearchResults([]);
-    setPlace("");
-    // Call API to save the new visited place to the database
-    // Here, you would replace "YOUR_API_ENDPOINT" with your own backend API endpoint
-    fetch("/api/visited-places", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: result.name, location: result.location }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
+    // setSearchResults([]);
+    // setPlace("");
+  };
+
+  let jwt = "";
+
+  if (typeof window !== "undefined") {
+    jwt = JSON.parse(localStorage.getItem("jwt"));
+  }
+
+  const handleSave = async () => {
+    let tempVisitedPlaces = visitedPlaces.map((item) => {
+      return { placeid: item.place.features__id, rating: item.rating };
+    });
+    console.log("tempvisitedplaces: ", tempVisitedPlaces);
+    let history = { history: tempVisitedPlaces };
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/user/${jwt.user._id}/addVisitedPlaces`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt.token}`,
+          },
+          body: JSON.stringify(history),
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log("Error saving places to db: ", error);
+    }
   };
 
   return (
@@ -58,10 +83,18 @@ const VisitedPlaces = () => {
       {searchResults.length > 0 && (
         <ul className="search-results">
           {searchResults.map((result) => (
-            <li key={result._id}>
-              <Button onClick={() => handleAdd(result)}>
+            <li key={result.features__id}>
+              {/* <Button onClick={() => handleAdd(result)}>
                 {result.features__properties__name}
-              </Button>
+              </Button> */}
+              <FormDialog
+                openButton={result.features__properties__name}
+                title={"Give a Rating"}
+                content={"Rate this place from 0 to 5 based on your experience"}
+                inputlabel={"Rating"}
+                OKButton={"Save"}
+                onClickOK={(rating) => handleAdd(result, rating)}
+              />
             </li>
           ))}
         </ul>
@@ -72,10 +105,15 @@ const VisitedPlaces = () => {
       {visitedPlaces.length > 0 && (
         <ul className="visited-places-list">
           {visitedPlaces.map((place) => (
-            <li key={place._id}>{place.features__properties__name}</li>
+            <li key={place.features__id}>
+              {place.place.features__properties__name} {place.rating}
+            </li>
           ))}
         </ul>
       )}
+      <Button variant="contained" color="primary" onClick={handleSave}>
+        Save Places
+      </Button>
     </div>
   );
 };

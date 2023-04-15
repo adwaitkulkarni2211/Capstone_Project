@@ -25,7 +25,6 @@ exports.addVisitedPlaces = async (req, res) => {
     const origHistory = req.profile.history;
     const newHistory = req.body.history;
     const history = [...origHistory, ...newHistory];
-    console.log(history);
 
     const origUser = await User.findByIdAndUpdate(
       { _id: req.profile._id },
