@@ -10,6 +10,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import checkAuth from "@/components/checkAuth/checkAuth";
+import { signout } from "@/api/authAPICalls";
+import { useRouter } from "next/router";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -60,8 +62,19 @@ const dashboard = () => {
     }
   }, [rec]);
 
+  const router = useRouter();
+
+  const handleSignout = () => {
+    signout(() => {
+      router.push("/signin");
+    });
+  };
+
   return (
     <>
+      <Button variant="contained" onClick={handleSignout}>
+        Sign Out
+      </Button>
       {console.log(data)}
       <Box sx={{ minWidth: 275 }}>
         <Grid
