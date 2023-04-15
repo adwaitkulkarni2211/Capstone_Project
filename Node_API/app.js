@@ -8,6 +8,7 @@ const app = express();
 
 //Importing Routes
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 
 //DB connection
 mongoose
@@ -27,6 +28,7 @@ app.use(cors());
 
 //Routes
 app.use("/api", authRoutes);
+app.use("/api", userRoutes);
 
 //Starting server
 const port = process.env.PORT || 3000;
