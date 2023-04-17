@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { TextField, Button, Typography, Link } from "@material-ui/core";
 import { signup } from "../../api/authAPICalls";
 import ErrorMessage from "../../components/messages/ErrorMessage";
@@ -10,6 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [location, setLocation] = useState({});
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
@@ -17,7 +18,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup({ name, email, password })
+    signup({ name, email, password, location })
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -28,6 +29,17 @@ const Signup = () => {
       })
       .catch(console.log("ERR IN SIGNUP"));
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((position) => {
+        const { longitude: long, latitude: lat } = position.coords;
+        setLocation({ lat,long });
+      });
+    } else {
+      console.log("No location found");
+    }
+  }, []);
 
   const SignupForm = () => {
     return (
