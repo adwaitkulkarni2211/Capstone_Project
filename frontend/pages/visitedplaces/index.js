@@ -20,6 +20,7 @@ function FormDialog({ openButton, onClickOK }) {
   };
 
   const [rating, setRating] = useState("");
+  const [tags, setTags] = useState([]);
 
   return (
     <div>
@@ -44,14 +45,30 @@ function FormDialog({ openButton, onClickOK }) {
           />
         </DialogContent>
         <DialogContent>
-          <MultipleSelectChip />
+          <DialogContentText>
+            {"Select the most appropriate tags to describe the place:"}
+          </DialogContentText>
+          <MultipleSelectChip
+            arr={[
+              "nature",
+              "trek",
+              "religious",
+              "historic",
+              "themePark",
+              "entertainment",
+              "architecture",
+            ]}
+            getSelectedItems={(seletedItems) => {
+              setTags(seletedItems);
+            }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             onClick={(e) => {
               handleClose();
-              onClickOK(rating);
+              onClickOK(rating, tags);
             }}
           >
             {"Save"}
@@ -79,10 +96,10 @@ const VisitedPlaces = () => {
     }
   };
 
-  const handleAdd = (place, rating) => {
+  const handleAdd = (place, rating, tags) => {
     const newVisitedPlaces = [
       ...visitedPlaces,
-      { place: place, rating: rating },
+      { place: place, rating: rating, tags: tags },
     ];
     setVisitedPlaces(newVisitedPlaces);
     // setSearchResults([]);
@@ -97,7 +114,11 @@ const VisitedPlaces = () => {
 
   const handleSave = async () => {
     let tempVisitedPlaces = visitedPlaces.map((item) => {
-      return { placeid: item.place.features__id, rating: item.rating };
+      return {
+        placeid: item.place.features__id,
+        rating: item.rating,
+        tags: item.tags,
+      };
     });
     console.log("tempvisitedplaces: ", tempVisitedPlaces);
     let history = { history: tempVisitedPlaces };
@@ -145,7 +166,7 @@ const VisitedPlaces = () => {
             <li key={result.features__id}>
               <FormDialog
                 openButton={result.features__properties__name}
-                onClickOK={(rating) => handleAdd(result, rating)}
+                onClickOK={(rating, tags) => handleAdd(result, rating, tags)}
               />
             </li>
           ))}
@@ -158,7 +179,8 @@ const VisitedPlaces = () => {
         <ul className="visited-places-list">
           {visitedPlaces.map((place) => (
             <li key={place.features__id}>
-              {place.place.features__properties__name} {place.rating}
+              {place.place.features__properties__name} {place.rating}{" "}
+              {JSON.stringify(place.tags)}
             </li>
           ))}
         </ul>

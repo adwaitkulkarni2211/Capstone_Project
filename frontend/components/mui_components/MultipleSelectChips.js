@@ -32,28 +32,32 @@ const names = [
   "Kelly Snyder",
 ];
 
-function getStyles(name, personName, theme) {
+function getStyles(item, selectedItems, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      selectedItems.indexOf(item) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
 }
 
-export default function MultipleSelectChip() {
+export default function MultipleSelectChip({ arr, getSelectedItems }) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [selectedItems, setSelectedItems] = React.useState([]);
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setSelectedItems(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
+
+  React.useEffect(() => {
+    getSelectedItems(selectedItems);
+  }, [selectedItems]);
 
   return (
     <div>
@@ -63,7 +67,7 @@ export default function MultipleSelectChip() {
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
+          value={selectedItems}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
@@ -75,13 +79,13 @@ export default function MultipleSelectChip() {
           )}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {arr.map((item) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+              key={item}
+              value={item}
+              style={getStyles(item, selectedItems, theme)}
             >
-              {name}
+              {item}
             </MenuItem>
           ))}
         </Select>
