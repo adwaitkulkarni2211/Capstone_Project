@@ -1,7 +1,66 @@
 import { useState } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 import checkAuth from "@/components/checkAuth/checkAuth";
-import FormDialog from "@/components/dialogs/FormDialog";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import MultipleSelectChip from "@/components/mui_components/MultipleSelectChips";
+
+function FormDialog({ openButton, onClickOK }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [rating, setRating] = useState("");
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        {openButton}
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{"Give a Rating"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {"Rate this place from 0 to 5 based on your experience"}
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Rating"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setRating(e.target.value)}
+          />
+        </DialogContent>
+        <DialogContent>
+          <MultipleSelectChip />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            onClick={(e) => {
+              handleClose();
+              onClickOK(rating);
+            }}
+          >
+            {"Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
 
 const VisitedPlaces = () => {
   const [place, setPlace] = useState("");
@@ -84,15 +143,8 @@ const VisitedPlaces = () => {
         <ul className="search-results">
           {searchResults.map((result) => (
             <li key={result.features__id}>
-              {/* <Button onClick={() => handleAdd(result)}>
-                {result.features__properties__name}
-              </Button> */}
               <FormDialog
                 openButton={result.features__properties__name}
-                title={"Give a Rating"}
-                content={"Rate this place from 0 to 5 based on your experience"}
-                inputlabel={"Rating"}
-                OKButton={"Save"}
                 onClickOK={(rating) => handleAdd(result, rating)}
               />
             </li>

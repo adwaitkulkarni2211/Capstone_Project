@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import MultipleSelectChip from "@/components/mui_components/MultipleSelectChips";
 
 export default function FormDialog({
   openButton,
@@ -46,6 +47,9 @@ export default function FormDialog({
             variant="standard"
             onChange={(e) => setRating(e.target.value)}
           />
+        </DialogContent>
+        <DialogContent>
+          <MultipleSelectChip />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
