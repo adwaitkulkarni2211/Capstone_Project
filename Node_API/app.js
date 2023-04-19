@@ -9,6 +9,7 @@ const app = express();
 //Importing Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const ratingRoutes = require("./routes/ratings");
 
 //DB connection
 mongoose
@@ -29,6 +30,7 @@ app.use(cors());
 //Routes
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", ratingRoutes);
 
 //Starting server
 const port = process.env.PORT || 3000;
