@@ -15,6 +15,7 @@ import checkAuth from "@/components/checkAuth/checkAuth";
 import { signout } from "@/api/authAPICalls";
 import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
+import Link from "next/link";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -49,6 +50,30 @@ const dashboard = () => {
     fetchRec();
   }, [userid]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const newData = [];
+  //     for (const place of rec) {
+  //       const response = await fetch(
+  //         `http://localhost:5000/place/${place.placeId}`
+  //       );
+  //       const placeData = await response.json();
+  //       newData.push({ placeData });
+  //     }
+  //     // setData((prevData) => [...prevData, ...newData]);
+  //     setData((prevData) => [
+  //       ...prevData,
+  //       ...newData.filter(
+  //         (item) =>
+  //           !prevData.some((prevItem) => prevItem.placeId === item.placeId)
+  //       ),
+  //     ]);
+  //     setLoading(false);
+  //   };
+  //   if (rec.length > 0) {
+  //     fetchData();
+  //   }
+  // }, [rec]);
   useEffect(() => {
     const fetchData = async () => {
       const newData = [];
@@ -59,7 +84,6 @@ const dashboard = () => {
         const placeData = await response.json();
         newData.push({ placeData });
       }
-      // setData((prevData) => [...prevData, ...newData]);
       setData((prevData) => [
         ...prevData,
         ...newData.filter(
@@ -69,8 +93,11 @@ const dashboard = () => {
       ]);
       setLoading(false);
     };
+    
     if (rec.length > 0) {
       fetchData();
+    } else {
+      setLoading(false);
     }
   }, [rec]);
 
@@ -93,7 +120,8 @@ const dashboard = () => {
           <Button variant="contained" onClick={handleSignout}>
             Sign Out
           </Button>
-          {/* {console.log(data)} */}
+          {console.log(data.length)}
+          {data.length === 0 && (<h1><Typography>Please add some data through <Link href="/visitedplaces">visited places</Link></Typography></h1>)}
           <div style={{ paddingRight: "15rem", paddingLeft: "15rem" }}>
             <Box sx={{ minWidth: 275 }}>
               <Grid
