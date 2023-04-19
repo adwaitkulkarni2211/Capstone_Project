@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MultipleSelectChip from "@/components/mui_components/MultipleSelectChips";
+import ErrorMessage from "@/components/messages/ErrorMessage";
+import SuccessMessage from "@/components/messages/SuccessMessage";
 
 function FormDialog({ openButton, onClickOK }) {
   const [open, setOpen] = useState(false);
@@ -83,6 +85,8 @@ const VisitedPlaces = () => {
   const [place, setPlace] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [visitedPlaces, setVisitedPlaces] = useState([]);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handlePlaceChange = (e) => setPlace(e.target.value);
 
@@ -122,6 +126,7 @@ const VisitedPlaces = () => {
     });
     console.log("tempvisitedplaces: ", tempVisitedPlaces);
     let history = { history: tempVisitedPlaces };
+    //API call to add visited places to user history
     try {
       const response = await fetch(
         `http://localhost:3000/api/user/${jwt.user._id}/addVisitedPlaces`,
@@ -137,8 +142,35 @@ const VisitedPlaces = () => {
       );
       console.log(response);
     } catch (error) {
+      setError("Error saving places to db");
       console.log("Error saving places to db: ", error);
     }
+
+    //API call to save rating in the ratings collection
+    tempVisitedPlaces.forEach(async (place) => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/rating/${jwt.user._id}/${place.placeid}/saveRating`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt.token}`,
+            },
+            body: JSON.stringify({
+              rating: place.rating,
+              tags: place.tags,
+            }),
+          }
+        );
+        console.log(response);
+        setSuccess("Information saved successfully");
+      } catch (error) {
+        setError("Error saving rating to db");
+        console.log("Error saving rating to db: ", error);
+      }
+    });
   };
 
   return (
@@ -188,6 +220,8 @@ const VisitedPlaces = () => {
       <Button variant="contained" color="primary" onClick={handleSave}>
         Save Places
       </Button>
+      <ErrorMessage message={error} />
+      <SuccessMessage message={success} />
     </div>
   );
 };
