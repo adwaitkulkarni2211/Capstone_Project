@@ -7,6 +7,7 @@ from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import csr_matrix
 import pymongo
 import json
+import requests
 from bson import json_util
 from bson import ObjectId
 import os
@@ -35,6 +36,17 @@ def placeInfo(id):
     results['_id'] = str(results['_id'])
     results_dict = json.loads(json.dumps(results, default=str))
     return results_dict
+
+
+@app.route('/test', methods=['GET'])
+def getData():
+    lat = request.args.get('lat')
+    long = request.args.get('long')
+    response = requests.get(f'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext=true&exintro=true&generator=geosearch&ggscoord={lat}|{long}')
+    data = response.json()
+    json_data = json.dumps(data)
+    return json_data
+
 
 @app.route('/search/<term>', methods=['GET'])
 def search(term):
