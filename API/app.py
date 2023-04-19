@@ -8,6 +8,7 @@ from scipy.sparse import csr_matrix
 import pymongo
 import json
 from bson import json_util
+from bson import ObjectId
 import os
 import pandas as pd
 from dotenv import load_dotenv
@@ -246,9 +247,10 @@ def cbr():
     new_places_df = pd.DataFrame(list(places_data))
     ratings_df = pd.DataFrame(list(ratings_data))
 
-    userid = request.args.get('userid', type=int)
+    userid = request.args.get('userid', type=str)
+    userid = ObjectId(userid)
     # Selecting all the rows of this userid
-    user_ratings_df = ratings_df[ratings_df['userid'] == 5]
+    user_ratings_df = ratings_df[ratings_df['userid'] == userid]
     user_places_df = pd.merge(user_ratings_df, new_places_df,
                             left_on='placeid', right_on='features__id')
     user_df = user_places_df[['userid', 'placeid',
