@@ -25,12 +25,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const dashboard = () => {
-  const userid = 1;
+  let userid = 1;
+  // const parsedObject = JSON.parse(localStorage.jwt);
+  // const userid = parsedObject.user._id;
+  // console.log(userid);
   const [rec, setRec] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
+    let parsedObject = localStorage.getItem("jwt");
+    parsedObject = JSON.parse(parsedObject)
+    userid = parsedObject.user._id;
+    // console.log(parsedObject.user._id);
     const fetchRec = () => {
       fetch(`http://localhost:5000/cbr?userid=${userid}`)
         .then((res) => res.json())
