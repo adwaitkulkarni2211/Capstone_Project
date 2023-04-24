@@ -49,31 +49,7 @@ const dashboard = () => {
     };
     fetchRec();
   }, [userid]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const newData = [];
-  //     for (const place of rec) {
-  //       const response = await fetch(
-  //         `http://localhost:5000/place/${place.placeId}`
-  //       );
-  //       const placeData = await response.json();
-  //       newData.push({ placeData });
-  //     }
-  //     // setData((prevData) => [...prevData, ...newData]);
-  //     setData((prevData) => [
-  //       ...prevData,
-  //       ...newData.filter(
-  //         (item) =>
-  //           !prevData.some((prevItem) => prevItem.placeId === item.placeId)
-  //       ),
-  //     ]);
-  //     setLoading(false);
-  //   };
-  //   if (rec.length > 0) {
-  //     fetchData();
-  //   }
-  // }, [rec]);
+  
   useEffect(() => {
     const fetchData = async () => {
       const newData = [];
