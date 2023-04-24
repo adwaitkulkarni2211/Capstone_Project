@@ -33,10 +33,10 @@ const dashboard = () => {
   const [rec, setRec] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     let parsedObject = localStorage.getItem("jwt");
-    parsedObject = JSON.parse(parsedObject)
+    parsedObject = JSON.parse(parsedObject);
     userid = parsedObject.user._id;
     // console.log(parsedObject.user._id);
     const fetchRec = () => {
@@ -93,7 +93,7 @@ const dashboard = () => {
       ]);
       setLoading(false);
     };
-    
+
     if (rec.length > 0) {
       fetchData();
     } else {
@@ -121,7 +121,14 @@ const dashboard = () => {
             Sign Out
           </Button>
           {console.log(data.length)}
-          {data.length === 0 && (<h1><Typography>Please add some data through <Link href="/visitedplaces">visited places</Link></Typography></h1>)}
+          {data.length === 0 && (
+            <h1>
+              <Typography>
+                Please add some data through{" "}
+                <Link href="/visitedplaces">visited places</Link>
+              </Typography>
+            </h1>
+          )}
           <div style={{ paddingRight: "15rem", paddingLeft: "15rem" }}>
             <Box sx={{ minWidth: 275 }}>
               <Grid
@@ -160,7 +167,25 @@ const dashboard = () => {
                           </Typography>
                         </CardContent>
                         <CardActions>
-                          <Button size="small">Learn More</Button>
+                          <Link
+                            href={{
+                              pathname: "/place",
+                              query: {
+                                id: item.placeData.features__id,
+                                name: item.placeData.features__properties__name,
+                                kinds:
+                                  item.placeData.features__properties__kinds,
+                                coordinate1:
+                                  item.placeData
+                                    .features__geometry__coordinates__001,
+                                coordinate2:
+                                  item.placeData
+                                    .features__geometry__coordinates__002,
+                              },
+                            }}
+                          >
+                            <Button size="small">Learn More</Button>
+                          </Link>
                         </CardActions>
                       </Card>
                     </Item>
