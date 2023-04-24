@@ -27,16 +27,37 @@ const Item = styled(Paper)(({ theme }) => ({
 const place_description = () => {
   const [placeDescription, setPlaceDescription] = useState(null);
   const router = useRouter();
+  // console.log(router.query);
   const { id } = router.query;
-  const { name, kinds, coordinate1, coordinate2 } = router.query;
-
+  const { name, kinds } = router.query;
+  const { coordinate2, coordinate1 } = router.query;
+  // console.log(coordinate1, coordinate2);
+  var requestBody = {
+    latitude: coordinate1,
+    longitude: coordinate2,
+  };
+  console.log(requestBody);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext=true&exintro=true&generator=geosearch&ggscoord=${coordinate2}|${coordinate1}`
-      );
-      const placeData = await response.json();
-      setPlaceDescription(placeData);
+      if (coordinate1 && coordinate2) {
+        // console.log(requestBody);
+        const response = await fetch(
+          `http://localhost:5000/test?lat=${coordinate2}&long=${coordinate1}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              lat: coordinate2,
+              long: coordinate1,
+            }),
+          }
+        );
+        const placeData = await response.json();
+        console.log(placeData);
+        setPlaceDescription(placeData);
+      }
     };
     fetchData();
   }, []);
@@ -48,11 +69,14 @@ const place_description = () => {
       <p>Kinds:{kinds}</p>
       <p>C1:{coordinate1}</p>
       <p>C2:{coordinate2}</p>
-      {placeDescription ? (
-        <p>Description:{placeDescription}</p>
-      ) : (
-        <p>Loading...</p>
-      )}
+      {/* <div>
+        {placeDescription.map((place) => (
+          <div key={place.pageid}>
+            <h2>{place.title}</h2>
+            <p>{place.extract}</p>
+          </div>
+        ))}
+      </div> */}
     </div>
   );
 };

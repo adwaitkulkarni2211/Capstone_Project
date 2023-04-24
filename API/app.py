@@ -38,14 +38,24 @@ def placeInfo(id):
     return results_dict
 
 
-@app.route('/test', methods=['GET'])
-def getData():
+@app.route('/test', methods=['POST'])
+def get_places():
+    data = request.get_json()
+    print('Data:',data)
+    # coordinates=json.loads(data)
+    # latitude=coordinates['latitude']
+    # longitude=coordinates['longitude']
     lat = request.args.get('lat')
     long = request.args.get('long')
-    response = requests.get(f'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext=true&exintro=true&generator=geosearch&ggscoord={lat}|{long}')
-    data = response.json()
-    json_data = json.dumps(data)
-    return json_data
+    print('Lat:',lat)
+    print('Long:',long)
+    # fetch the places data using the latitude and longitude
+    url = f'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext=true&exintro=true&generator=geosearch&ggscoord={lat}|{long}'
+    response = requests.get(url)
+    places_data = response.json()
+
+    # return the places data as JSON response
+    return jsonify(places_data)
 
 
 @app.route('/search/<term>', methods=['GET'])
