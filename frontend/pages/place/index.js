@@ -32,6 +32,7 @@ const place_description = () => {
   const { name, kinds } = router.query;
   const { coordinate2, coordinate1 } = router.query;
   // console.log(coordinate1, coordinate2);
+  var place_name = name;
   var requestBody = {
     latitude: coordinate1,
     longitude: coordinate2,
@@ -56,7 +57,12 @@ const place_description = () => {
         );
         const placeData = await response.json();
         console.log(placeData);
-        setPlaceDescription(placeData);
+        const page = Object.values(placeData.query.pages).find(
+          (p) => p.title === place_name
+        );
+        const place_description = page?.extract ?? "No description available";
+        console.log(place_description);
+        setPlaceDescription(place_description);
       }
     };
     fetchData();
@@ -69,14 +75,8 @@ const place_description = () => {
       <p>Kinds:{kinds}</p>
       <p>C1:{coordinate1}</p>
       <p>C2:{coordinate2}</p>
-      {/* <div>
-        {placeDescription.map((place) => (
-          <div key={place.pageid}>
-            <h2>{place.title}</h2>
-            <p>{place.extract}</p>
-          </div>
-        ))}
-      </div> */}
+      <p>Description:{placeDescription}</p>
+      <Button size="large">Create trip</Button>
     </div>
   );
 };
