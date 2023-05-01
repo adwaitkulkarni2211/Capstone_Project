@@ -61,14 +61,9 @@ const place_description = () => {
         if (placeData.hasOwnProperty("query") === false) {
           place_description = "No description available";
         } else {
-          const page = Object.values(placeData.query.pages).filter((place) => {
-            const regex = new RegExp(name, "i"); // case-insensitive regex pattern
-            return regex.test(place.title);
-          });
-          // const regex = new RegExp(name, "i");
-          // const page = Object.values(placeData.query.pages).filter((place) =>
-          //   regex.test(place.extract)
-          // );
+          const page = Object.values(placeData.query.pages).filter(
+            (place) => name.includes(place.title) || place.title.includes(name)
+          );
           console.log(page);
           place_description = page[0]?.extract ?? "No description available";
           console.log(place_description);
