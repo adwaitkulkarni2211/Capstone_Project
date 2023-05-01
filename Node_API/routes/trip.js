@@ -22,7 +22,7 @@ router.post(
 );
 
 router.get(
-  "/trip/:userid/:tripid",
+  "/trip/:userid/:tripid/isAuthenticatedToEnterTrip",
   isSignedIn,
   isAuthenticated,
   isAuthenticatedToEnterTrip
