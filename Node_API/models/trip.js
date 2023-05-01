@@ -10,10 +10,6 @@ const tripSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
-  roomid: {
-    type: String,
-    required: true,
-  },
   members: {
     type: Array,
     required: true,
