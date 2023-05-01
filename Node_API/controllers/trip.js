@@ -41,6 +41,7 @@ exports.isAuthenticatedToEnterTrip = async (req, res) => {
 exports.createTrip = async (req, res) => {
   try {
     const newTrip = new Trip({
+      name: req.body.name,
       placeid: req.place.features__id,
       adminid: req.profile._id,
       members: [req.profile._id],
@@ -49,6 +50,7 @@ exports.createTrip = async (req, res) => {
     const savedTrip = await newTrip.save();
 
     res.json({
+      name: savedTrip.name,
       placeid: savedTrip.placeid,
       adminid: savedTrip.adminid,
       members: savedTrip.members,

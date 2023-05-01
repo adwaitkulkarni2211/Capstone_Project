@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const tripSchema = mongoose.Schema({
+  name: {
+    type: String,
+    rquired: true,
+  },
   placeid: {
     type: Number,
     required: true,
