@@ -57,11 +57,22 @@ const place_description = () => {
         );
         const placeData = await response.json();
         console.log(placeData);
-        const page = Object.values(placeData.query.pages).find(
-          (p) => p.title === place_name
-        );
-        const place_description = page?.extract ?? "No description available";
-        console.log(place_description);
+        let place_description;
+        if (placeData.hasOwnProperty("query") === false) {
+          place_description = "No description available";
+        } else {
+          const page = Object.values(placeData.query.pages).filter((place) => {
+            const regex = new RegExp(name, "i"); // case-insensitive regex pattern
+            return regex.test(place.title);
+          });
+          // const regex = new RegExp(name, "i");
+          // const page = Object.values(placeData.query.pages).filter((place) =>
+          //   regex.test(place.extract)
+          // );
+          console.log(page);
+          place_description = page[0]?.extract ?? "No description available";
+          console.log(place_description);
+        }
         setPlaceDescription(place_description);
       }
     };

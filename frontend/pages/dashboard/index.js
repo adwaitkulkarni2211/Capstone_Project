@@ -49,7 +49,7 @@ const dashboard = () => {
     };
     fetchRec();
   }, [userid]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const newData = [];
@@ -105,7 +105,13 @@ const dashboard = () => {
               </Typography>
             </h1>
           )}
-          <div style={{ paddingRight: "15rem", paddingLeft: "15rem" }}>
+          <div
+            style={{
+              paddingRight: "15rem",
+              paddingLeft: "15rem",
+              borderRadius: "8px",
+            }}
+          >
             <Box sx={{ minWidth: 275 }}>
               <Grid
                 container
