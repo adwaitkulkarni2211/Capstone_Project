@@ -18,6 +18,26 @@ const tripSchema = mongoose.Schema({
     type: Array,
     required: true,
   },
+  messages: {
+    type: [
+      {
+        sender: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        time: {
+          type: Date,
+          required: true,
+        },
+        content: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Trip", tripSchema);
