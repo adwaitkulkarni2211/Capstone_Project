@@ -1,0 +1,14 @@
+#chat {
+  border: 1px solid red;
+  display: flex;
+
+  height: 100vh;
+}
+
+#chat-left {
+  width: 20%;
+}
+#chat-right {
+  width: 80%;
+  height: 100%;
+}
