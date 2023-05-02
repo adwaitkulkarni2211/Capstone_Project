@@ -62,3 +62,22 @@ exports.createTrip = async (req, res) => {
     });
   }
 };
+
+exports.getMyTrips = async (req, res) => {
+  try {
+    const myTrips = await Trip.find({ members: { $in: [req.profile._id] } });
+
+    if (!myTrips) {
+      throw "NO TRIPS FOUND";
+    }
+
+    res.json({
+      myTrips: myTrips,
+    });
+  } catch (error) {
+    console.log("GETMYTRIPS ERROR: ", error);
+    return res.status(400).json({
+      error: error,
+    });
+  }
+};

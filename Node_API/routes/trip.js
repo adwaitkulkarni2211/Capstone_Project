@@ -6,6 +6,7 @@ const {
   createTrip,
   getTripById,
   isAuthenticatedToEnterTrip,
+  getMyTrips,
 } = require("../controllers/trip");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
@@ -27,5 +28,7 @@ router.get(
   isAuthenticated,
   isAuthenticatedToEnterTrip
 );
+
+router.get("/trip/:userid/getMyTrips", isSignedIn, isAuthenticated, getMyTrips);
 
 module.exports = router;
