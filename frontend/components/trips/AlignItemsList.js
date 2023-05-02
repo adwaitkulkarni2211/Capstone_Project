@@ -10,12 +10,12 @@ const style = {
   bgcolor: "background.paper",
 };
 
-export default function ListDividers({ chats }) {
+export default function ListDividers({ chats, setCurrentTrip }) {
   return (
     <List sx={style} component="nav" aria-label="mailbox folders">
       {chats.map((chat, idx) => (
         <div key={idx}>
-          <ListItem button>
+          <ListItem button onClick={() => setCurrentTrip(chat)}>
             <ListItemText primary={chat.name} />
           </ListItem>
           <Divider />

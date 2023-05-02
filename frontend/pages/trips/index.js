@@ -5,6 +5,7 @@ import { getMyTrips } from "../../api/tripAPICals";
 
 const Trips = () => {
   const [myTrips, setMyTrips] = useState([]);
+  const [currentTrip, setCurrentTrip] = useState({});
 
   //API call to get all Trips
   useEffect(() => {
@@ -18,13 +19,17 @@ const Trips = () => {
       .catch(() => console.log("ERROR IN GETMYTRIPS"));
   }, []);
 
+  useEffect(() => {
+    console.log("CURRENT TRIP", currentTrip);
+  }, [currentTrip]);
+
   return (
     <div id="chat">
       <div id="chat-left">
-        <AlignItemsList chats={myTrips} />
+        <AlignItemsList chats={myTrips} setCurrentTrip={setCurrentTrip} />
       </div>
       <div id="chat-right">
-        <ChatWindow />
+        <ChatWindow currentTrip={currentTrip} />
       </div>
     </div>
   );
