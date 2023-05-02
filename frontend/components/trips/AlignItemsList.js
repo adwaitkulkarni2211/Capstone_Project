@@ -13,13 +13,13 @@ const style = {
 export default function ListDividers({ chats }) {
   return (
     <List sx={style} component="nav" aria-label="mailbox folders">
-      {chats.map((chat) => (
-        <>
+      {chats.map((chat, idx) => (
+        <div key={idx}>
           <ListItem button>
-            <ListItemText primary={chat} />
+            <ListItemText primary={chat.name} />
           </ListItem>
           <Divider />
-        </>
+        </div>
       ))}
     </List>
   );

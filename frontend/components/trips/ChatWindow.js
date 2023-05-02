@@ -17,13 +17,11 @@ const ChatWindow = () => {
   return (
     <div id="chat-window">
       <div id="messages">
-        {messages.map((msg) => (
-          <>
-            <div className="msg">
-              <Typography variant="h10">{msg}</Typography>
-            </div>
+        {messages.map((msg, idx) => (
+          <div className="msg" key={idx}>
+            <Typography variant="h10">{msg}</Typography>
             <Divider />
-          </>
+          </div>
         ))}
       </div>
       <div id="input-send">
