@@ -34,6 +34,11 @@ const tripSchema = mongoose.Schema({
           type: String,
           required: true,
         },
+        room: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Trip",
+          required: true,
+        },
       },
     ],
     default: [],

@@ -83,14 +83,12 @@ exports.getMyTrips = async (req, res) => {
 };
 
 exports.storeMessage = async (req, res) => {
-  const newMessages = [...req.body.currentTrip.messages, req.body.newMessage];
   try {
-    await Trip.findByIdAndUpdate(
-      { _id: req.body.currentTrip._id },
-      { messages: newMessages }
+    const updatedTrip = await Trip.findByIdAndUpdate(
+      req.body.tripid,
+      { $push: { messages: req.body.newMessage } },
+      { new: true }
     );
-
-    const updatedTrip = await Trip.findById(req.body.currentTrip._id);
 
     res.json({
       _id: updatedTrip._id,

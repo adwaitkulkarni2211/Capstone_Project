@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AlignItemsList from "@/components/trips/AlignItemsList";
 import ChatWindow from "@/components/trips/ChatWindow";
-import { getMyTrips } from "../../api/tripAPICals";
+import { getMyTrips, storeMessage } from "../../api/tripAPICals";
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:3000");
@@ -32,22 +32,37 @@ const Trips = () => {
       }
     };
     joinRoom();
+
+    if (currentTrip.messages !== undefined) {
+      setAllMessages(currentTrip.messages);
+    }
   }, [currentTrip]);
 
   const sendMessage = async () => {
     const jwt = JSON.parse(localStorage.getItem("jwt"));
     const messageData = {
       sender: jwt.user._id,
-      time:
-        new Date(Date.now()).getHours() +
-        ":" +
-        new Date(Date.now()).getMinutes(),
+      time: new Date().toISOString(),
       content: currentMessage,
       room: currentTrip._id,
     };
 
     await socket.emit("to_backend", messageData);
     setAllMessages((messageList) => [...messageList, messageData]);
+
+    //save message to database
+    const messageDataToSend = {
+      tripid: currentTrip._id,
+      newMessage: messageData,
+    };
+    console.log(JSON.stringify(messageDataToSend));
+    storeMessage(messageDataToSend)
+      .then((data) => {
+        if (data.error) {
+          console.log("error:", error);
+        }
+      })
+      .catch(() => console.log("ERROR IN STOREMESSAGE"));
   };
 
   useEffect(() => {
