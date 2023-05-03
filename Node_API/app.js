@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const http = require("http");
-const { Server } = require("socket.io");
 const io = require("./socket");
 
 //Importing Routes
@@ -38,37 +36,6 @@ app.use("/api", ratingRoutes);
 app.use("/api", tripRoutes);
 
 //socket.io stuff
-// const server = http.createServer(app);
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3001",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// io.on("connection", (socket) => {
-//   console.log("User Connected", socket.id);
-
-//   socket.on("join_room", (data) => {
-//     socket.join(data);
-//     console.log(`User with id ${socket.id} joined the room ${data}`);
-//   });
-
-//   socket.on("to_backend", (data) => {
-//     console.log(
-//       `User with socket id ${socket.id} has sent the message: ${JSON.stringify(
-//         data
-//       )}`
-//     );
-
-//     socket.to(JSON.stringify(data.room)).emit("from_backend", data);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected", socket.id);
-//   });
-// });
 const server = require("http").createServer(app);
 
 io.attach(server, {
