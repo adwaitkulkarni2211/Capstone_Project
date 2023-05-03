@@ -31,37 +31,46 @@ const Signin = () => {
 
   const SigninForm = () => {
     return (
-      <form onSubmit={handleSubmit} className="signup-form">
-        <Typography variant="h5" gutterBottom>
-          Sign In
-        </Typography>
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={handleEmailChange}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Sign In
-        </Button>
-        <Typography variant="body2" style={{ marginTop: "16px" }}>
-          Don't have an Account?{" "}
-          <Link href="/signup" color="primary">
-            Sign Up Here
-          </Link>
-        </Typography>
-      </form>
+      <div className="login-page">
+        <form onSubmit={handleSubmit} className="login-form">
+          <Typography variant="h5" gutterBottom>
+            Sign In
+          </Typography>
+          <TextField
+            label="Email"
+            variant="standard"
+            fullWidth
+            margin="normal"
+            value={email}
+            onChange={handleEmailChange}
+            className="form-input"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="standard"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={handlePasswordChange}
+            className="form-input"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "10px", backgroundColor: "#004f8c" }}
+          >
+            Sign In
+          </Button>
+          <Typography variant="body2" style={{ marginTop: "16px" }}>
+            Don't have an Account?{" "}
+            <Link href="/signup" color="primary">
+              Sign Up Here
+            </Link>
+          </Typography>
+        </form>
+      </div>
     );
   };
 
