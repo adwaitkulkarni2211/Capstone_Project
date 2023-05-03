@@ -7,6 +7,7 @@ const {
   getTripById,
   isAuthenticatedToEnterTrip,
   getMyTrips,
+  storeMessage,
 } = require("../controllers/trip");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
@@ -30,5 +31,12 @@ router.get(
 );
 
 router.get("/trip/:userid/getMyTrips", isSignedIn, isAuthenticated, getMyTrips);
+
+router.put(
+  "/trip/:userid/storeMessage",
+  isSignedIn,
+  isAuthenticated,
+  storeMessage
+);
 
 module.exports = router;

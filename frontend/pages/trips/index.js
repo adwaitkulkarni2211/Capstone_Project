@@ -25,7 +25,7 @@ const Trips = () => {
   }, []);
 
   useEffect(() => {
-    console.log("CURRENT TRIP", currentTrip);
+    console.log("CURRENT TRIP", JSON.stringify(currentTrip));
     const joinRoom = async () => {
       if (currentTrip._id !== undefined) {
         await socket.emit("join_room", JSON.stringify(currentTrip._id));
