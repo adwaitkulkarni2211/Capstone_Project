@@ -4,7 +4,7 @@ import { Button, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ErrorMessage from "../messages/ErrorMessage";
 
-const ChatWindow = ({ currentTrip }) => {
+const ChatWindow = ({ setCurrentMessage, sendMessage, allMessages }) => {
   // const messages = [
   //   "Hey!",
   //   "Hello!",
@@ -18,10 +18,10 @@ const ChatWindow = ({ currentTrip }) => {
   return (
     <div id="chat-window">
       <div id="messages">
-        {currentTrip.messages > 0 ? (
-          currentTrip.messages.content.map((msg, idx) => (
+        {allMessages.length > 0 ? (
+          allMessages.map((msg, idx) => (
             <div className="msg" key={idx}>
-              <Typography variant="h10">{msg}</Typography>
+              <Typography variant="h10">{msg.content}</Typography>
               <Divider />
             </div>
           ))
@@ -30,8 +30,15 @@ const ChatWindow = ({ currentTrip }) => {
         )}
       </div>
       <div id="input-send">
-        <TextField fullWidth label="fullWidth" id="fullWidth" />
-        <Button variant="contained">Send</Button>
+        <TextField
+          fullWidth
+          label="fullWidth"
+          id="fullWidth"
+          onChange={(e) => setCurrentMessage(e.target.value)}
+        />
+        <Button variant="contained" onClick={sendMessage}>
+          Send
+        </Button>
       </div>
     </div>
   );
