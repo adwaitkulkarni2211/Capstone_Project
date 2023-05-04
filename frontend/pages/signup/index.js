@@ -91,17 +91,15 @@ const Signup = () => {
             </Link>
           </Typography>
         </form>
+        <div className="messages">
+          <ErrorMessage message={error} />
+          <SuccessMessage message={success} />
+        </div>
       </div>
     );
   };
 
-  return (
-    <>
-      {SignupForm()}
-      <ErrorMessage message={error} />
-      <SuccessMessage message={success} />
-    </>
-  );
+  return <div>{SignupForm()}</div>;
 };
 
 export default Signup;

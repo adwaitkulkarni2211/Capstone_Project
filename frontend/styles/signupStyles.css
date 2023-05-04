@@ -13,6 +13,7 @@
   background-size: cover;
   background-position: center; */
   height: 100vh;
+  position: relative;
 }
 .signup-form,
 .login-form {
@@ -48,6 +49,12 @@
   transition: all 0.3 ease;
   cursor: pointer;
   border-radius: 11px;
+}
+.messages {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  right: 50px;
 }
 @media only screen and (max-width: 600px) {
   .signup-form {

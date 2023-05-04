@@ -70,16 +70,14 @@ const Signin = () => {
             </Link>
           </Typography>
         </form>
+        <div className="messages">
+          <ErrorMessage message={error} />
+        </div>
       </div>
     );
   };
 
-  return (
-    <>
-      {SigninForm()}
-      <ErrorMessage message={error} />
-    </>
-  );
+  return <>{SigninForm()}</>;
 };
 
 export default Signin;
