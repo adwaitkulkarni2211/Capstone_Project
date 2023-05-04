@@ -16,7 +16,7 @@ router.put(
   addVisitedPlaces
 );
 
-router.get(
+router.post(
   "/user/:userid/getUsersByName",
   isSignedIn,
   isAuthenticated,
