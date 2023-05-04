@@ -8,6 +8,7 @@ const {
   isAuthenticatedToEnterTrip,
   getMyTrips,
   storeMessage,
+  addMembersToTrip,
 } = require("../controllers/trip");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
@@ -37,6 +38,13 @@ router.put(
   isSignedIn,
   isAuthenticated,
   storeMessage
+);
+
+router.put(
+  "/trip/:adminid/addMembersToTrip",
+  isSignedIn,
+  isAuthenticated,
+  addMembersToTrip
 );
 
 module.exports = router;

@@ -100,3 +100,22 @@ exports.storeMessage = async (req, res) => {
     });
   }
 };
+
+exports.addMembersToTrip = async (req, res) => {
+  try {
+    const updatedTrip = await Trip.findByIdAndUpdate(
+      req.body.tripid,
+      { $push: { members: { $each: req.body.newMembers } } },
+      { new: true }
+    );
+
+    res.json({
+      _id: updatedTrip._id,
+      members: updatedTrip.members,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: error,
+    });
+  }
+};
