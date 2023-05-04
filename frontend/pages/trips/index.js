@@ -25,7 +25,6 @@ const Trips = () => {
   }, []);
 
   useEffect(() => {
-    console.log("CURRENT TRIP", JSON.stringify(currentTrip));
     const joinRoom = async () => {
       if (currentTrip._id !== undefined) {
         await socket.emit("join_room", JSON.stringify(currentTrip._id));
@@ -55,7 +54,6 @@ const Trips = () => {
       tripid: currentTrip._id,
       newMessage: messageData,
     };
-    console.log(JSON.stringify(messageDataToSend));
     storeMessage(messageDataToSend)
       .then((data) => {
         if (data.error) {
@@ -76,10 +74,6 @@ const Trips = () => {
       socket.off("from_backend");
     };
   }, []);
-
-  useEffect(() => {
-    console.log("ALL MESSAGES: ", allMessages);
-  }, [allMessages]);
 
   return (
     <div id="chat">
