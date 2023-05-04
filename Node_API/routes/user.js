@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { addVisitedPlaces, getUserById } = require("../controllers/user");
+const {
+  addVisitedPlaces,
+  getUserById,
+  getUsersByName,
+} = require("../controllers/user");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
 router.param("userid", getUserById);
@@ -10,6 +14,13 @@ router.put(
   isSignedIn,
   isAuthenticated,
   addVisitedPlaces
+);
+
+router.get(
+  "/user/:userid/getUsersByName",
+  isSignedIn,
+  isAuthenticated,
+  getUsersByName
 );
 
 module.exports = router;

@@ -45,3 +45,23 @@ exports.addVisitedPlaces = async (req, res) => {
     });
   }
 };
+
+exports.getUsersByName = async (req, res) => {
+  try {
+    const regex = new RegExp(`.*${req.body.name.split("").join(".*")}.*`, "i");
+    const users = await User.find({ name: regex }).sort({ name: 1 });
+
+    if (users.length === 0) {
+      throw "NO USER FOUND.";
+    }
+
+    res.json({
+      users: users,
+    });
+  } catch (error) {
+    console.log("GET USER BY NAME ERROR: ", error);
+    return res.status(400).json({
+      error: error,
+    });
+  }
+};
