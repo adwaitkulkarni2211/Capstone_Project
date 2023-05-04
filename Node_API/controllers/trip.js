@@ -40,11 +40,13 @@ exports.isAuthenticatedToEnterTrip = async (req, res) => {
 
 exports.createTrip = async (req, res) => {
   try {
+    const members = [req.profile._id, ...req.body.members]
     const newTrip = new Trip({
       name: req.body.name,
       placeid: req.place.features__id,
       adminid: req.profile._id,
-      members: [req.profile._id],
+      // members: [req.profile._id],
+      members: members
     });
 
     const savedTrip = await newTrip.save();
