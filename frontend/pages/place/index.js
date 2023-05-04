@@ -69,7 +69,10 @@ const place_description = () => {
   const [title, setTitle] = useState();
   const [success, setSuccess] = useState(false);
 
-  const handleSearchChange = (e) => setSearch(e.target.value);
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    // setSuccess(false);
+  };
   const handleOmg = (e) => setOmg(e.target.value);
   const handleNameChange = () => {
     setTitle(omg);
@@ -167,7 +170,7 @@ const place_description = () => {
       ...prevState,
       [_id]: { name, email, _id },
     }));
-    setSuccess("Successfully added");
+    // setSuccess("Successfully added");
   };
   const handleSubmit = () => {
     var myHeaders = new Headers();
@@ -176,6 +179,7 @@ const place_description = () => {
 
     var raw = JSON.stringify({
       name: `${title}`,
+      members: Object.keys(addedUser),
     });
 
     var requestOptions = {
@@ -190,7 +194,10 @@ const place_description = () => {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log(result);
+        setSuccess("Data Saved");
+      })
       .catch((error) => console.log("error", error));
   };
   return (
@@ -296,6 +303,7 @@ const place_description = () => {
                         Back
                       </Button>
                     </div>
+                    <SuccessMessage message={success}/>
                   </Box>
                 </StepContent>
               </Step>
@@ -303,7 +311,6 @@ const place_description = () => {
           </Stepper>
         </Box>
       </Modal>
-      {/* <SuccessMessage message={success}/> */}
     </div>
   );
 };
