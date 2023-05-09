@@ -35,11 +35,7 @@
     "chalk" "^2.0.0"
     "js-tokens" "^4.0.0"
 
-<<<<<<< HEAD
 "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.18.3", "@babel/runtime@^7.21.0", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
-=======
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.18.3", "@babel/runtime@^7.21.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
->>>>>>> 5b0efd70fdf39359f823d24fce9a4b860443eb96
   "integrity" "sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.21.0.tgz"
   "version" "7.21.0"
@@ -180,7 +176,6 @@
     "prop-types" "^15.7.2"
     "react-is" "^17.0.2"
     "react-transition-group" "^4.4.0"
-<<<<<<< HEAD
 
 "@material-ui/icons@^4.11.3":
   "integrity" "sha512-IKHlyx6LDh8n19vzwH5RtHIOHl9Tu90aAAxcbWME6kp4dmvODM3UvOHJeMIDzUbd4muuJKHmlNoBN+mDY4XkBA=="
@@ -188,8 +183,6 @@
   "version" "4.11.3"
   dependencies:
     "@babel/runtime" "^7.4.4"
-=======
->>>>>>> 5b0efd70fdf39359f823d24fce9a4b860443eb96
 
 "@material-ui/private-theming@5.0.0-beta.5":
   "integrity" "sha512-3J642OgHUAga6CYtzWRWG3d5FKG6NMTSxXSyk0Cc85iz/Zvl3n+x7g/MCeq8VjZULv10NzkySIXdNFQi8EKmYA=="
@@ -342,11 +335,6 @@
   "resolved" "https://registry.npmjs.org/@next/env/-/env-13.2.4.tgz"
   "version" "13.2.4"
 
-<<<<<<< HEAD
-"@next/swc-win32-x64-msvc@13.2.4":
-  "integrity" "sha512-0MffFmyv7tBLlji01qc0IaPP/LVExzvj7/R5x1Jph1bTAIj4Vu81yFQWHHQAP6r4ff9Ukj1mBK6MDNVXm7Tcvw=="
-  "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.2.4.tgz"
-=======
 "@next/swc-linux-x64-gnu@13.2.4":
   "integrity" "sha512-Ngxh51zGSlYJ4EfpKG4LI6WfquulNdtmHg1yuOYlaAr33KyPJp4HeN/tivBnAHcZkoNy0hh/SbwDyCnz5PFJQQ=="
   "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-13.2.4.tgz"
@@ -355,7 +343,6 @@
 "@next/swc-linux-x64-musl@13.2.4":
   "integrity" "sha512-gOvwIYoSxd+j14LOcvJr+ekd9fwYT1RyMAHOp7znA10+l40wkFiMONPLWiZuHxfRk+Dy7YdNdDh3ImumvL6VwA=="
   "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-13.2.4.tgz"
->>>>>>> 5b0efd70fdf39359f823d24fce9a4b860443eb96
   "version" "13.2.4"
 
 "@popperjs/core@^2.11.6", "@popperjs/core@^2.4.4":
