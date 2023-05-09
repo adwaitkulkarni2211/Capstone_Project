@@ -123,7 +123,7 @@ def cf():
         'placeid').size(), columns=['count'])
 
     # now we need to take only places that have been rated atleast 50 times to get some idea of the reactions of users towards it
-    popularity_thres = 50
+    popularity_thres = 1 # Change this later when there are more users
     popular_places = list(
         set(df_places_cnt.query('count >= @popularity_thres').index))
     df_ratings_drop_places = df_ratings[df_ratings.placeid.isin(popular_places)]
@@ -136,7 +136,7 @@ def cf():
         'userid').size(), columns=['count'])
 
     # filter data to come to an approximation of user likings.
-    ratings_thres = 20
+    ratings_thres = 0 # Change this later when there are more users
     active_users = list(set(df_users_cnt.query('count >= @ratings_thres').index))
     df_ratings_drop_users = df_ratings_drop_places[df_ratings_drop_places.userid.isin(
         active_users)]
