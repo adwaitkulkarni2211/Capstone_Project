@@ -16,6 +16,7 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import TextField from "@mui/material/TextField";
 import SuccessMessage from "@/components/messages/SuccessMessage";
+import CfRec from "@/components/cfRec/CfRec";
 
 const style = {
   position: "absolute",
@@ -311,6 +312,7 @@ const place_description = () => {
           </Stepper>
         </Box>
       </Modal>
+      <CfRec name={name}/>
     </div>
   );
 };
