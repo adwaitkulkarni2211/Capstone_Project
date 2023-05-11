@@ -40,7 +40,7 @@ const Trips = () => {
   const sendMessage = async () => {
     const jwt = JSON.parse(localStorage.getItem("jwt"));
     const messageData = {
-      sender: jwt.user._id,
+      sender: jwt.user.name,
       time: new Date().toISOString(),
       content: currentMessage,
       room: currentTrip._id,

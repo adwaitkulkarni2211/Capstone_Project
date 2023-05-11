@@ -19,8 +19,7 @@ const tripSchema = mongoose.Schema({
     type: [
       {
         sender: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          type: String,
           required: true,
         },
         time: {

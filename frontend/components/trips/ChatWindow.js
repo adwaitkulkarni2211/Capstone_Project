@@ -18,10 +18,12 @@ const ChatWindow = ({ setCurrentMessage, sendMessage, allMessages }) => {
   return (
     <div id="chat-window">
       <div id="messages">
+        <Divider />
         {allMessages.length > 0 ? (
           allMessages.map((msg, idx) => (
             <div className="msg" key={idx}>
               <Typography variant="h10">{msg.content}</Typography>
+              <Typography>{msg.sender + "." + msg.time}</Typography>
               <Divider />
             </div>
           ))
