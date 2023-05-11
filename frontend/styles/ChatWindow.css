@@ -1,19 +1,34 @@
 #chat-window {
-  border: 1px solid black;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 
   height: 100%;
   width: 100%;
-}
 
-#input-send {
-  display: flex;
-  margin-top: 1rem;
+  border-left: 1px solid black;
 }
 
 .msg {
   padding: 0.5rem;
+}
+
+.msg-content {
+  font-size: 1.3rem;
+}
+
+.msg-details {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.75rem;
+}
+
+#input-send {
+  display: flex;
+  margin: 1rem;
+}
+
+#send-btn {
+  margin-left: 1rem;
 }

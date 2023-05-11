@@ -9,7 +9,7 @@ const socket = io.connect("http://localhost:3000");
 const Trips = () => {
   const [myTrips, setMyTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
-  const [currentMessage, setCurretMessage] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
 
   //API call to get all Trips
@@ -38,6 +38,9 @@ const Trips = () => {
   }, [currentTrip]);
 
   const sendMessage = async () => {
+    if (currentMessage === "") {
+      return;
+    }
     const jwt = JSON.parse(localStorage.getItem("jwt"));
     const messageData = {
       sender: jwt.user.name,
@@ -61,6 +64,8 @@ const Trips = () => {
         }
       })
       .catch(() => console.log("ERROR IN STOREMESSAGE"));
+
+    setCurrentMessage("");
   };
 
   useEffect(() => {
@@ -82,7 +87,8 @@ const Trips = () => {
       </div>
       <div id="chat-right">
         <ChatWindow
-          setCurrentMessage={setCurretMessage}
+          setCurrentMessage={setCurrentMessage}
+          currentMessage={currentMessage}
           sendMessage={sendMessage}
           allMessages={allMessages}
         />
