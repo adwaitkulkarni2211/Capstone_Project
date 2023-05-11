@@ -3,6 +3,7 @@ import AlignItemsList from "@/components/trips/AlignItemsList";
 import ChatWindow from "@/components/trips/ChatWindow";
 import { getMyTrips, storeMessage } from "../../api/tripAPICals";
 import io from "socket.io-client";
+import checkAuth from "@/components/checkAuth/checkAuth";
 
 const socket = io.connect("http://localhost:3000");
 
@@ -97,4 +98,4 @@ const Trips = () => {
   );
 };
 
-export default Trips;
+export default checkAuth(Trips);
