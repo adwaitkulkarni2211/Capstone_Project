@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import TextField from "@mui/material/TextField";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ErrorMessage from "../messages/ErrorMessage";
 import { format } from "date-fns";
@@ -44,6 +44,7 @@ const ChatWindow = ({
         <TextField
           fullWidth
           label="Type Message"
+          autoComplete="off"
           id="input-field"
           onChange={(e) => setCurrentMessage(e.target.value)}
           onKeyDown={handleKeyDown}
