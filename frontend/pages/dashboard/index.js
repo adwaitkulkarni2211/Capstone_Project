@@ -18,14 +18,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
 import Navbar from "@/components/navbar/navbar";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 const dashboard = () => {
   let userid = 1;
   // const parsedObject = JSON.parse(localStorage.jwt);
@@ -74,17 +66,19 @@ const dashboard = () => {
     if (rec.length > 0) {
       fetchData();
     } else {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 8000);
     }
   }, [rec]);
 
   const router = useRouter();
 
-  const handleSignout = () => {
-    signout(() => {
-      router.push("/signin");
-    });
-  };
+  // const handleSignout = () => {
+  //   signout(() => {
+  //     router.push("/signin");
+  //   });
+  // };
   function handleLearnMoreClick(e, item) {
     e.preventDefault();
     const url = `/place?id=${item.placeData.features__id}&name=${item.placeData.features__properties__name}&kinds=${item.placeData.features__properties__kinds}&coordinate1=${item.placeData.features__geometry__coordinates__001}&coordinate2=${item.placeData.features__geometry__coordinates__002}`;
@@ -94,65 +88,85 @@ const dashboard = () => {
   return (
     <>
       {loading ? (
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            flexDirection: "column",
+          }}
+        >
+          <CircularProgress style={{ textAlign: "center", margin: "0 auto" }} />
+          <Typography variant="h6" style={{ marginTop: "10px" }}>
+            Loading Places...{" "}
+          </Typography>
         </Box>
       ) : (
         <div>
-          <Navbar />
-          <Button variant="contained" onClick={handleSignout}>
+          <div style={{ marginBottom: "40px" }}>
+            <Navbar />
+          </div>
+          {/* <Button variant="contained" onClick={handleSignout}>
             Sign Out
-          </Button>
+          </Button> */}
           {console.log(data.length)}
-          {data.length === 0 && (
+          {/* {data.length === 0 && (
             <h1>
               <Typography>
                 Please add some data through{" "}
                 <Link href="/visitedplaces">visited places</Link>
               </Typography>
             </h1>
-          )}
+          )} */}
           <div
             style={{
-              paddingRight: "15rem",
-              paddingLeft: "15rem",
+              paddingRight: "15px",
+              paddingLeft: "15px",
               borderRadius: "8px",
-              marginTop: "20px",
+              marginTop: "100px",
+              marginLeft: "40px",
             }}
           >
-            <Box minWidth={350} style={{ marginTop: "20px" }}>
+            <Box style={{ marginTop: "20px", marginBottom: "20px" }}>
               <Grid container spacing={2}>
                 {data.map((item, index) => (
-                  <Grid item spacing={2} md={4} key={index}>
+                  <Grid item spacing={2} key={index}>
                     {/* {console.log(item)} */}
                     <Card
                       variant="outlined"
-                      style={{ height: 250, width: 350 }}
+                      style={{
+                        height: 250,
+                        width: 300,
+                        boxShadow: "0 0.6rem 1.2rem rgba(0, 0, 0, 0.075)",
+                      }}
+                      className="card-content"
                     >
                       {" "}
                       <CardContent>
-                        <Typography variant="h5" component="div">
+                        <Typography variant="h6" component="div">
                           {item.placeData.features__properties__name}
                         </Typography>
-                        <Stack spacing={1} alignItems="center">
-                          <Stack direction="row" spacing={1}>
-                            {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
-                            {item.placeData.features__properties__kinds
-                              .split(",")
-                              .map((kinds) => (
+
+                        {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
+                        <div className="tags">
+                          {item.placeData.features__properties__kinds
+                            .split(",")
+                            .map((kinds) => {
+                              // Check if kinds equals "interesting_places"
+                              if (kinds === "interesting_places") {
+                                return null; // Return null to skip rendering
+                              }
+                              return (
                                 <Chip
                                   label={kinds}
-                                  color="success"
+                                  color="primary"
                                   size="small"
+                                  variant="outlined"
                                 />
-                              ))}
-                          </Stack>
-                        </Stack>
-                        <Typography variant="body2">
-                          well meaning and kindly.
-                          <br />
-                          {'"a benevolent smile"'}
-                        </Typography>
+                              );
+                            })}
+                        </div>
                       </CardContent>
                       <CardActions>
                         {/* <Link
@@ -179,8 +193,9 @@ const dashboard = () => {
                         <Button
                           size="small"
                           onClick={(e) => handleLearnMoreClick(e, item)}
+                          className="explore-btn"
                         >
-                          Learn More
+                          Explore
                         </Button>
                       </CardActions>
                     </Card>

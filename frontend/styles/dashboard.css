@@ -1,0 +1,10 @@
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}

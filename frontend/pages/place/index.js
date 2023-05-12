@@ -59,7 +59,7 @@ const place_description = () => {
   if (typeof window !== "undefined") {
     jwt = JSON.parse(localStorage.getItem("jwt"));
   }
-
+  const [loading, setLoading] = useState(true);
   const [placeDescription, setPlaceDescription] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -129,6 +129,7 @@ const place_description = () => {
         console.log(page);
         place_description = page[0]?.extract ?? "No description available";
         console.log(place_description);
+        setLoading(false);
       }
       setPlaceDescription(place_description);
     };
@@ -199,118 +200,137 @@ const place_description = () => {
       .catch((error) => console.log("error", error));
   };
   return (
-    <div>
-      <h1>Place description</h1>
-      <p>ID:{id}</p>
-      <p>Name:{name}</p>
-      <p>Kinds:{kinds}</p>
-      <p>C1:{coordinate1}</p>
-      <p>C2:{coordinate2}</p>
-      <p>Description:{placeDescription}</p>
-      <Button size="large" onClick={handleOpen}>
-        Create trip
-      </Button>
-      <Modal
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={style}>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((step, index) => (
-              <Step key={step.label}>
-                <StepLabel
-                  optional={
-                    index === 2 ? (
-                      <Typography variant="caption">Last step</Typography>
-                    ) : null
-                  }
-                >
-                  {step.label}
-                </StepLabel>
-                <StepContent>
-                  <Typography>{step.description}</Typography>
-                  {index === 0 && (
-                    <div>
-                      <Typography>Search People</Typography>
-                      <TextField
-                        id="outlined-basic"
-                        label="search"
-                        variant="outlined"
-                        size="small"
-                        onChange={handleSearchChange}
-                      />
-                      <Button onClick={searchPeople}>Search</Button>
-                      {results &&
-                        results.map(({ name, email, _id }) => (
-                          <div>
-                            <Typography
-                              key={_id}
-                            >{`name: ${name} & email: ${email}`}</Typography>
-                            <Button onClick={() => addPeople(name, email, _id)}>
-                              add
-                            </Button>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                  {/* {console.log(addedUser)} */}
-                  {index === 1 && (
-                    <TextField
-                      id="outlined-basic"
-                      label="name"
-                      variant="outlined"
-                      size="small"
-                      onChange={handleOmg}
-                    />
-                  )}
-                  {index === 2 && (
-                    <div>
-                      {Object.entries(addedUser).map(
-                        ([id, { name, email }]) => (
-                          <div key={id}>
-                            <Typography>{`name: ${name} & email: ${email}`}</Typography>
-                          </div>
-                        )
-                      )}
-                      <Typography>{title}</Typography>
-                    </div>
-                  )}
-                  <Box sx={{ mb: 2 }}>
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={
-                          index === 1
-                            ? handleNameChange
-                            : index === 2
-                            ? handleSubmit
-                            : handleNext
-                        }
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        {index === steps.length - 1 ? "Confirm" : "Continue"}
-                      </Button>
-                      <Button
-                        disabled={index === 0}
-                        onClick={handleBack}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                    <SuccessMessage message={success} />
-                  </Box>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
+    <>
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            flexDirection: "column",
+          }}
+        >
+          <CircularProgress style={{ textAlign: "center", margin: "0 auto" }} />
+          <Typography variant="h6" style={{ marginTop: "10px" }}>
+            Loading...{" "}
+          </Typography>
         </Box>
-      </Modal>
-      <CfRec name={name} />
-    </div>
+      ) : (
+        <div>
+          <h1>{name}</h1>
+          <p>Kinds: {kinds}</p>
+          <p>Description:{placeDescription}</p>
+          <Button size="large" onClick={handleOpen}>
+            Create trip
+          </Button>
+          <Modal
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+          >
+            <Box sx={style}>
+              <Stepper activeStep={activeStep} orientation="vertical">
+                {steps.map((step, index) => (
+                  <Step key={step.label}>
+                    <StepLabel
+                      optional={
+                        index === 2 ? (
+                          <Typography variant="caption">Last step</Typography>
+                        ) : null
+                      }
+                    >
+                      {step.label}
+                    </StepLabel>
+                    <StepContent>
+                      <Typography>{step.description}</Typography>
+                      {index === 0 && (
+                        <div>
+                          <Typography>Search People</Typography>
+                          <TextField
+                            id="outlined-basic"
+                            label="search"
+                            variant="outlined"
+                            size="small"
+                            onChange={handleSearchChange}
+                          />
+                          <Button onClick={searchPeople}>Search</Button>
+                          {results &&
+                            results.map(({ name, email, _id }) => (
+                              <div>
+                                <Typography
+                                  key={_id}
+                                >{`name: ${name} & email: ${email}`}</Typography>
+                                <Button
+                                  onClick={() => addPeople(name, email, _id)}
+                                >
+                                  add
+                                </Button>
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                      {/* {console.log(addedUser)} */}
+                      {index === 1 && (
+                        <TextField
+                          id="outlined-basic"
+                          label="name"
+                          variant="outlined"
+                          size="small"
+                          onChange={handleOmg}
+                        />
+                      )}
+                      {index === 2 && (
+                        <div>
+                          {Object.entries(addedUser).map(
+                            ([id, { name, email }]) => (
+                              <div key={id}>
+                                <Typography>{`name: ${name} & email: ${email}`}</Typography>
+                              </div>
+                            )
+                          )}
+                          <Typography>{title}</Typography>
+                        </div>
+                      )}
+                      <Box sx={{ mb: 2 }}>
+                        <div>
+                          <Button
+                            variant="contained"
+                            onClick={
+                              index === 1
+                                ? handleNameChange
+                                : index === 2
+                                ? handleSubmit
+                                : handleNext
+                            }
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            {index === steps.length - 1
+                              ? "Confirm"
+                              : "Continue"}
+                          </Button>
+                          <Button
+                            disabled={index === 0}
+                            onClick={handleBack}
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            Back
+                          </Button>
+                        </div>
+                        <SuccessMessage message={success} />
+                      </Box>
+                    </StepContent>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </Modal>
+          <CfRec name={name} />
+        </div>
+      )}
+    </>
   );
 };
 export default place_description;

@@ -120,18 +120,18 @@ const Navbar = () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${jwt.token}`);
-    
+
         var raw = JSON.stringify({
           name: `${place}`,
         });
-    
+
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-    
+
         try {
           const response = await fetch(
             `http://localhost:3000/api/user/${jwt.user._id}/getUsersByName`,
@@ -146,11 +146,16 @@ const Navbar = () => {
       };
 
       setOpen(true);
-      if(option === "place") {handleSearchPlace()} else searchPeople()
+      if (option === "place") {
+        handleSearchPlace();
+      } else searchPeople();
     }
   };
-  const addPeople = (name, email, _id) => {
-    
+  const addPeople = (name, email, _id) => {};
+  const handleSignout = () => {
+    signout(() => {
+      router.push("/signin");
+    });
   };
 
   const drawer = (
@@ -174,10 +179,16 @@ const Navbar = () => {
   );
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "stretch",
+      }}
+    >
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-evenly" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -194,7 +205,7 @@ const Navbar = () => {
           >
             TripTravellor
           </Typography>
-          <Box sx={{ ml: 8, display: "flex" }}>
+          <Box sx={{ display: "flex" }}>
             {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -212,6 +223,7 @@ const Navbar = () => {
               onChange={(e) => setPlace(e.target.value)}
               value={place}
               onKeyDown={enterPressed}
+              style={{ textAlign: "center", padding: "10px" }}
             />
             <Modal
               open={open}
@@ -220,7 +232,7 @@ const Navbar = () => {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h6">
                   Search {option === place ? "Place" : "People"} Result
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -247,7 +259,8 @@ const Navbar = () => {
                           </Link>
                         </li>
                       ))}
-                      {option === "person" && result &&
+                      {option === "person" &&
+                        result &&
                         result.map(({ name, email, _id }) => (
                           <div>
                             <Typography
@@ -280,10 +293,9 @@ const Navbar = () => {
           </Box>
           <Box
             sx={{
-              ml: 10,
-              display: { xs: "none", sm: "block" },
-              alignItems: "center",
-              justifyContent: "center",
+              display: "flex",
+              justifyContent: "space-evenly",
+              gap: "10px",
             }}
           >
             {navLinks.map((item) => (
@@ -293,6 +305,14 @@ const Navbar = () => {
                 </Button>
               </a>
             ))}
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleSignout}
+              style={{ justifySelf: "flex-end" }}
+            >
+              Sign Out
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
