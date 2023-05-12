@@ -16,6 +16,7 @@ import { signout } from "@/api/authAPICalls";
 import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
+import Navbar from "@/components/navbar/navbar";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -93,6 +94,7 @@ const dashboard = () => {
         </Box>
       ) : (
         <div>
+          <Navbar/>
           <Button variant="contained" onClick={handleSignout}>
             Sign Out
           </Button>
