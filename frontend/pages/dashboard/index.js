@@ -85,6 +85,11 @@ const dashboard = () => {
       router.push("/signin");
     });
   };
+  function handleLearnMoreClick(e, item) {
+    e.preventDefault();
+    const url = `/place?id=${item.placeData.features__id}&name=${item.placeData.features__properties__name}&kinds=${item.placeData.features__properties__kinds}&coordinate1=${item.placeData.features__geometry__coordinates__001}&coordinate2=${item.placeData.features__geometry__coordinates__002}`;
+    window.open(url, "_blank");
+  }
 
   return (
     <>
@@ -94,7 +99,7 @@ const dashboard = () => {
         </Box>
       ) : (
         <div>
-          <Navbar/>
+          <Navbar />
           <Button variant="contained" onClick={handleSignout}>
             Sign Out
           </Button>
@@ -112,67 +117,73 @@ const dashboard = () => {
               paddingRight: "15rem",
               paddingLeft: "15rem",
               borderRadius: "8px",
+              marginTop: "20px",
             }}
           >
-            <Box sx={{ minWidth: 275 }}>
-              <Grid
-                container
-                spacing={{ xs: 2, md: 3 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
-              >
+            <Box minWidth={350} style={{ marginTop: "20px" }}>
+              <Grid container spacing={2}>
                 {data.map((item, index) => (
-                  <Grid item xs={2} sm={4} md={4} key={index}>
+                  <Grid item spacing={2} md={4} key={index}>
                     {/* {console.log(item)} */}
-                    <Item>
-                      <Card variant="outlined">
-                        {" "}
-                        <CardContent>
-                          <Typography variant="h5" component="div">
-                            {item.placeData.features__properties__name}
-                          </Typography>
-                          <Stack spacing={1} alignItems="center">
-                            <Stack direction="row" spacing={1}>
-                              {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
-                              {item.placeData.features__properties__kinds
-                                .split(",")
-                                .map((kinds) => (
-                                  <Chip
-                                    label={kinds}
-                                    color="success"
-                                    size="small"
-                                  />
-                                ))}
-                            </Stack>
+                    <Card
+                      variant="outlined"
+                      style={{ height: 250, width: 350 }}
+                    >
+                      {" "}
+                      <CardContent>
+                        <Typography variant="h5" component="div">
+                          {item.placeData.features__properties__name}
+                        </Typography>
+                        <Stack spacing={1} alignItems="center">
+                          <Stack direction="row" spacing={1}>
+                            {/* <Chip label={item.placeData.features__properties__kinds} color="success" size="small"/> */}
+                            {item.placeData.features__properties__kinds
+                              .split(",")
+                              .map((kinds) => (
+                                <Chip
+                                  label={kinds}
+                                  color="success"
+                                  size="small"
+                                />
+                              ))}
                           </Stack>
-                          <Typography variant="body2">
-                            well meaning and kindly.
-                            <br />
-                            {'"a benevolent smile"'}
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Link
-                            href={{
-                              pathname: "/place",
-                              query: {
-                                id: item.placeData.features__id,
-                                name: item.placeData.features__properties__name,
-                                kinds:
-                                  item.placeData.features__properties__kinds,
-                                coordinate1:
-                                  item.placeData
-                                    .features__geometry__coordinates__001,
-                                coordinate2:
-                                  item.placeData
-                                    .features__geometry__coordinates__002,
-                              },
-                            }}
-                          >
+                        </Stack>
+                        <Typography variant="body2">
+                          well meaning and kindly.
+                          <br />
+                          {'"a benevolent smile"'}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        {/* <Link
+                          href={{
+                            pathname: "/place",
+                            query: {
+                              id: item.placeData.features__id,
+                              name: item.placeData.features__properties__name,
+                              kinds: item.placeData.features__properties__kinds,
+                              coordinate1:
+                                item.placeData
+                                  .features__geometry__coordinates__001,
+                              coordinate2:
+                                item.placeData
+                                  .features__geometry__coordinates__002,
+                            },
+                          }}
+                          passHref
+                        >
+                          <a target="_blank">
                             <Button size="small">Learn More</Button>
-                          </Link>
-                        </CardActions>
-                      </Card>
-                    </Item>
+                          </a>
+                        </Link> */}
+                        <Button
+                          size="small"
+                          onClick={(e) => handleLearnMoreClick(e, item)}
+                        >
+                          Learn More
+                        </Button>
+                      </CardActions>
+                    </Card>
                   </Grid>
                 ))}
               </Grid>

@@ -90,7 +90,7 @@ const place_description = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const router = useRouter();
-  // console.log(router.query);
+  console.log(router.query);
   const { id } = router.query;
   const { name, kinds } = router.query;
   const { coordinate2, coordinate1 } = router.query;
@@ -104,39 +104,36 @@ const place_description = () => {
   console.log(requestBody);
   useEffect(() => {
     const fetchData = async () => {
-      if (coordinate1 && coordinate2) {
-        // console.log(requestBody);
-        const response = await fetch(
-          `http://localhost:5000/test?lat=${coordinate2}&long=${coordinate1}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              lat: coordinate2,
-              long: coordinate1,
-            }),
-          }
-        );
-        const placeData = await response.json();
-        console.log(placeData);
-        let place_description;
-        if (placeData.hasOwnProperty("query") === false) {
-          place_description = "No description available";
-        } else {
-          const page = Object.values(placeData.query.pages).filter(
-            (place) => name.includes(place.title) || place.title.includes(name)
-          );
-          console.log(page);
-          place_description = page[0]?.extract ?? "No description available";
-          console.log(place_description);
+      const response = await fetch(
+        `http://localhost:5000/test?lat=${coordinate2}&long=${coordinate1}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            lat: coordinate2,
+            long: coordinate1,
+          }),
         }
-        setPlaceDescription(place_description);
+      );
+      const placeData = await response.json();
+      console.log(placeData);
+      let place_description;
+      if (placeData.hasOwnProperty("query") === false) {
+        place_description = "No description available";
+      } else {
+        const page = Object.values(placeData.query.pages).filter(
+          (place) => name.includes(place.title) || place.title.includes(name)
+        );
+        console.log(page);
+        place_description = page[0]?.extract ?? "No description available";
+        console.log(place_description);
       }
+      setPlaceDescription(place_description);
     };
     fetchData();
-  }, []);
+  }, [coordinate2, coordinate1]);
   const searchPeople = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -304,7 +301,7 @@ const place_description = () => {
                         Back
                       </Button>
                     </div>
-                    <SuccessMessage message={success}/>
+                    <SuccessMessage message={success} />
                   </Box>
                 </StepContent>
               </Step>
@@ -312,7 +309,7 @@ const place_description = () => {
           </Stepper>
         </Box>
       </Modal>
-      <CfRec name={name}/>
+      <CfRec name={name} />
     </div>
   );
 };
