@@ -23,6 +23,9 @@ import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Link from "next/link";
+import { getMyTrips } from "../../api/tripAPICals";
+import { signout } from "@/api/authAPICalls";
+import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
@@ -52,6 +55,9 @@ const Navbar = () => {
   const [option, setOption] = React.useState(["place"]);
   const [place, setPlace] = React.useState();
   const [result, setResult] = React.useState([]);
+  const [myTrips, setMyTrips] = React.useState([]);
+
+  const router = useRouter();
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -137,9 +143,8 @@ const Navbar = () => {
             `http://localhost:3000/api/user/${jwt.user._id}/getUsersByName`,
             requestOptions
           );
-          const result = await response.json();
-          setResult(result.users.users);
-          console.log(result);
+          const results = await response.json();
+          setResult(results.users);
         } catch (error) {
           console.log("error", error);
         }
@@ -151,7 +156,40 @@ const Navbar = () => {
       } else searchPeople();
     }
   };
-  const addPeople = (name, email, _id) => {};
+  const addPeople = (name, email, _id) => {
+    getMyTrips()
+      .then((data) => {
+        if (data.error) {
+          console.log("error:", error);
+        }
+        setMyTrips([...data.myTrips]);
+      })
+      .catch(() => console.log("ERROR IN GETMYTRIPS"));
+  };
+  const handleAddPerson = (tripid, userid) => {
+    console.log(userid);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${jwt.token}`);
+    var raw = JSON.stringify({
+      tripid: `${tripid}`,
+      newMembers: [`${userid}`],
+    });
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:3000/api/trip/${jwt.user._id}/addMembersToTrip`,
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
   const handleSignout = () => {
     signout(() => {
       router.push("/signin");
@@ -255,25 +293,39 @@ const Navbar = () => {
                               },
                             }}
                           >
-                            <Button size="small">Learn More</Button>
+                            <Button size="small">Explore</Button>
                           </Link>
                         </li>
                       ))}
-                      {option === "person" &&
-                        result &&
-                        result.map(({ name, email, _id }) => (
-                          <div>
-                            <Typography
-                              key={_id}
-                            >{`name: ${name} & email: ${email}`}</Typography>
-                            <Button onClick={() => addPeople(name, email, _id)}>
-                              add
-                            </Button>
-                          </div>
-                        ))}
                     </ul>
                   )}
-                  .
+                  {
+                    // option === "person" &&
+                    result &&
+                      result.map(({ name, email, _id }) => (
+                        <div>
+                          <Typography
+                            key={_id}
+                          >{`name: ${name} & email: ${email}`}</Typography>
+                          <Button onClick={() => addPeople(name, email, _id)}>
+                            add
+                          </Button>
+                          {myTrips.map((trip, idx) => (
+                            <div key={idx}>
+                              <ListItem
+                                button
+                                onClick={() => {
+                                  handleAddPerson(trip._id, _id);
+                                }}
+                              >
+                                <ListItemText primary={trip.name} />
+                              </ListItem>
+                              <Divider />
+                            </div>
+                          ))}
+                        </div>
+                      ))
+                  }
                 </Typography>
               </Box>
             </Modal>

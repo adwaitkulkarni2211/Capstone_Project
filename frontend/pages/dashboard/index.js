@@ -12,7 +12,6 @@ import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import checkAuth from "@/components/checkAuth/checkAuth";
-import { signout } from "@/api/authAPICalls";
 import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
