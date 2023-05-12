@@ -96,7 +96,11 @@
   "resolved" "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.8.0.tgz"
   "version" "0.8.0"
 
+<<<<<<< HEAD
 "@emotion/react@^11.0.0-rc.0", "@emotion/react@^11.10.6", "@emotion/react@^11.4.1", "@emotion/react@^11.5.0":
+=======
+"@emotion/react@^11.10.6":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-6HT8jBmcSkfzO7mc+N1L9uwvOnlcGoix8Zn7srt+9ga0MjREo6lRpuVX0kzo6Jp6oTqDhREOFsygN6Ew4fEQbw=="
   "resolved" "https://registry.npmjs.org/@emotion/react/-/react-11.10.6.tgz"
   "version" "11.10.6"
@@ -126,7 +130,11 @@
   "resolved" "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.2.1.tgz"
   "version" "1.2.1"
 
+<<<<<<< HEAD
 "@emotion/styled@^11.10.6", "@emotion/styled@^11.3.0":
+=======
+"@emotion/styled@^11.10.6":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-OXtBzOmDSJo5Q0AFemHCfl+bUueT8BIcPSxu0EGTpGk6DmI5dnhSzQANm1e1ze0YZL7TDyAyy6s/b/zmGOS3Og=="
   "resolved" "https://registry.npmjs.org/@emotion/styled/-/styled-11.10.6.tgz"
   "version" "11.10.6"
@@ -158,7 +166,11 @@
   "resolved" "https://registry.npmjs.org/@emotion/weak-memoize/-/weak-memoize-0.3.0.tgz"
   "version" "0.3.0"
 
+<<<<<<< HEAD
 "@material-ui/core@^4.0.0", "@material-ui/core@^5.0.0-beta.5":
+=======
+"@material-ui/core@^5.0.0-beta.5":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-ubRMdWJ+Maqvo0P13M+AThaHp5rBBIaURxoQ+Dx4/2Llrm1mepjINDL5PsABabqUbbNc6K+cmqgX4gwEFe7exw=="
   "resolved" "https://registry.npmjs.org/@material-ui/core/-/core-5.0.0-beta.5.tgz"
   "version" "5.0.0-beta.5"
@@ -262,6 +274,7 @@
   "integrity" "sha512-rfc08z6+3Fif+Gopx2/qmk+MEQlwYeA+gOcSK048BHkTty/ol/boHuVeL2BNC/cf9OVRjJLYHtVb/DeW791LSQ=="
   "resolved" "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.11.14.tgz"
   "version" "5.11.14"
+<<<<<<< HEAD
 
 "@mui/icons-material@^5.11.16":
   "integrity" "sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A=="
@@ -271,6 +284,17 @@
     "@babel/runtime" "^7.21.0"
 
 "@mui/material@^5.0.0", "@mui/material@^5.11.14":
+=======
+
+"@mui/icons-material@^5.11.16":
+  "integrity" "sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.11.16.tgz"
+  "version" "5.11.16"
+  dependencies:
+    "@babel/runtime" "^7.21.0"
+
+"@mui/material@^5.11.14":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-uoiUyybmo+M+nYARBygmbXgX6s/hH0NKD56LCAv9XvmdGVoXhEGjOvxI5/Bng6FS3NNybnA8V+rgZW1Z/9OJtA=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.11.14.tgz"
   "version" "5.11.14"
@@ -342,9 +366,20 @@
   "resolved" "https://registry.npmjs.org/@next/env/-/env-13.2.4.tgz"
   "version" "13.2.4"
 
+<<<<<<< HEAD
 "@next/swc-win32-x64-msvc@13.2.4":
   "integrity" "sha512-0MffFmyv7tBLlji01qc0IaPP/LVExzvj7/R5x1Jph1bTAIj4Vu81yFQWHHQAP6r4ff9Ukj1mBK6MDNVXm7Tcvw=="
   "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.2.4.tgz"
+=======
+"@next/swc-linux-x64-gnu@13.2.4":
+  "integrity" "sha512-Ngxh51zGSlYJ4EfpKG4LI6WfquulNdtmHg1yuOYlaAr33KyPJp4HeN/tivBnAHcZkoNy0hh/SbwDyCnz5PFJQQ=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-13.2.4.tgz"
+  "version" "13.2.4"
+
+"@next/swc-linux-x64-musl@13.2.4":
+  "integrity" "sha512-gOvwIYoSxd+j14LOcvJr+ekd9fwYT1RyMAHOp7znA10+l40wkFiMONPLWiZuHxfRk+Dy7YdNdDh3ImumvL6VwA=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-13.2.4.tgz"
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "version" "13.2.4"
 
 "@popperjs/core@^2.11.6", "@popperjs/core@^2.4.4":
@@ -388,7 +423,11 @@
   dependencies:
     "@types/react" "*"
 
+<<<<<<< HEAD
 "@types/react@*", "@types/react@^16.8.6 || ^17.0.0", "@types/react@^17.0.0 || ^18.0.0":
+=======
+"@types/react@*":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-yBon9aJ+pVyP0dzfs4sR2DOseDi6fDnZQHqFaprzDzFgxDLkUhL/Frjf2egvpdlVtssWH8k3YAgvaGQXFu+4Kw=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.54.tgz"
   "version" "17.0.54"
@@ -696,7 +735,11 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.13.1"
 
+<<<<<<< HEAD
 "react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2", "react-dom@^18.2.0", "react-dom@>=16.6.0", "react-dom@18.2.0":
+=======
+"react-dom@18.2.0":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
@@ -734,7 +777,11 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
+<<<<<<< HEAD
 "react@^16.8.0 || ^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@^18.2.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.6.0", "react@>=16.8.0", "react@18.2.0":
+=======
+"react@18.2.0":
+>>>>>>> 7d81041 (Place search working / Getting User Data, not showing)
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
