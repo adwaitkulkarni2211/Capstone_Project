@@ -13,6 +13,8 @@ from bson import ObjectId
 import os
 import pandas as pd
 from dotenv import load_dotenv
+import heapq
+import math
 from flask_cors import CORS
 load_dotenv()
 
@@ -73,6 +75,137 @@ def search(term):
 
     # Return the search results as JSON
     return jsonify(json_results)
+
+@app.route('/sga/<id>',methods=['GET'])
+def sga(id) :
+    json_result = []
+
+    # search for the person with that id
+    user = db["User"].find_one({"_id": id})
+    size = 7
+    latitude = user['location']['lat']
+    longitude = user['location']['long']
+    distance = 5 #in kilometers
+    user_array = np.zeros(size,dtype='float')    
+    places_visited_subject_array = user['history']
+
+        #condition of not including the subject into sda
+    if(len(places_visited_subject_array) < 5):
+        return jsonify(json_result)
+
+    for places in places_visited_subject_array:
+        new_array = np.zeros(size,dtype=float)
+        place = db["Places_Counter"].find_one("place_id":places["placeid"])
+            #condition to not include a place in sga
+        if(place["review_counter"] < 5 and place["tags_counter"] < 5):
+                continue
+        place_rating = place["average_rating"]
+        new_array[0] = place["nature_counter"]
+        new_array[1] = place["trek_counter"]
+        new_array[2] = place["religious_counter"]
+        new_array[3] = place["historic_counter"]
+        new_array[4] = place["themePark_counter"]
+        new_array[5] = place["entertainment_counter"]
+        new_array[6] = place["architecture_counter"]
+        total = sum(new_array)
+        for i in range(size):
+            new_array[i] = round(new_array[i]/total , 2)
+            user_array[i] += new_array[i]*place_rating
+        
+        max_value = np.max(user_array)
+
+        for i in range(size):
+            if(max_value!=0):
+                user_array[i] = np.round(user_array[i]/max_value,decimals=2)
+
+
+    # make a graph for the user with "_id" as id
+
+
+
+
+    # get the list of users within 5km of distance
+    users_within_distance = db["User"].find({
+            "location": {
+                "$nearSphere": {
+                    "$geometry": {
+                        "type": "Point",
+                        "coordinates": [longitude, latitude]
+                    },
+                    "$maxDistance": distance * 1000  # Convert distance from kilometers to meters
+                }
+            }
+        }).limit(1000)
+
+
+
+    # get the list of places the user have visited for each user
+
+    mapped_data = {}
+
+    
+    for user in users_within_distance:
+        id = user["_id"]
+        places_visited_user = db["User"].find_one({"_id":id})
+        places_visited_array = places_visited_user['history']
+
+        #condition of not including a person into the sga
+        if(len(places_visited_array) < 5):
+            continue
+
+        mapped_array = np.zeros(size,dtype=float)
+        for places in places_visited_array:
+            new_array = np.zeros(size,dtype=float)
+            place = db["Places_Counter"].find_one({"place_id":places["placeid"]})
+            #condition to not include a place in sga
+            if(place["review_counter"] < 5 and place["tags_counter"] < 5):
+                continue
+            place_rating = place["average_rating"]
+            new_array[0] = place["nature_counter"]
+            new_array[1] = place["trek_counter"]
+            new_array[2] = place["religious_counter"]
+            new_array[3] = place["historic_counter"]
+            new_array[4] = place["themePark_counter"]
+            new_array[5] = place["entertainment_counter"]
+            new_array[6] = place["architecture_counter"]
+            total = sum(new_array)
+            for i in range(size):
+                new_array[i] = round(new_array[i]/total , 2)
+                mapped_array[i] += new_array[i]*place_rating
+        
+        max_value = np.max(mapped_array)
+
+        for i in range(size):
+            if(max_value!=0):
+                mapped_array[i] = np.round(mapped_array[i]/max_value,decimals=2)
+
+        mapped_data[id] = mapped_array
+            
+    
+    no_of_recommendations = 4;
+    heap = []
+
+    for i,profile in mapped_data.items():
+        if(max(profile)==0):
+            continue
+        value = 0
+        for j in range(size):
+            temp = abs(profile[j]-user_array[j])
+            value += (temp ** 2)
+        heapq.heappush(heap,(-math.sqrt(value),i))
+        if(len(heap) > no_of_recommendations):
+            heapq.heappop(heap)
+
+
+    while(heap):
+        rcmd = heapq.heappop(heap)
+        get_user = db["User"].find_one({"_id":rcmd[1]})
+        json_result.append(get_user.next())
+
+    return jsonify(json_result)
+
+   
+
 
 @app.route('/cf',methods=['GET'])
 def cf():
