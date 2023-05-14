@@ -15,7 +15,7 @@ const PlacesCounter_Schema = mongoose.Schema({
     default :0,
   },
   average_rating:{
-    type: Float32Array,
+    type:Number,
     required: true,
     default:0,
   },
