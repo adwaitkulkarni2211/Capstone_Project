@@ -95,7 +95,7 @@ def sga(id) :
 
     for places in places_visited_subject_array:
         new_array = np.zeros(size,dtype=float)
-        place = db["Places_Counter"].find_one("place_id":places["placeid"])
+        place = db["Places_Counter"].find_one({"place_id":places["placeid"]})
             #condition to not include a place in sga
         if(place["review_counter"] < 5 and place["tags_counter"] < 5):
                 continue
@@ -182,7 +182,7 @@ def sga(id) :
         mapped_data[id] = mapped_array
             
     
-    no_of_recommendations = 4;
+    no_of_recommendations = 4
     heap = []
 
     for i,profile in mapped_data.items():
