@@ -25,8 +25,8 @@ exports.updatePlacesCounters = async (req,res) =>{
   
       const exists = await Places_Counter.exists({place_id : place_id})
   
-        if(exists){
-          await Places_Counter.updateOne(
+      try{  if(exists){
+           await Places_Counter.updateOne(
             { _id: exists._id },
             {
               $inc: {
@@ -47,7 +47,7 @@ exports.updatePlacesCounters = async (req,res) =>{
           );
   
         }else {
-          await Places_Counter.create({
+           await Places_Counter.create({
             place_id,
             reviews_counter: 1,
             average_rating: rating,
@@ -61,6 +61,12 @@ exports.updatePlacesCounters = async (req,res) =>{
             architecture_counter: tagCount["architecture"]
           });
         }
+
+    }catch(e){
+        console.log(e);
+    }
+    
+    
       
   
     })

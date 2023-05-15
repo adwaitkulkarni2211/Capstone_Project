@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const ratingRoutes = require("./routes/ratings");
 const tripRoutes = require("./routes/trip");
+const updatePlacesCounterRoutes = require("./routes/placesCounter")
 
 //DB connection
 mongoose
@@ -34,6 +35,7 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", ratingRoutes);
 app.use("/api", tripRoutes);
+app.use("/api", updatePlacesCounterRoutes)
 
 //socket.io stuff
 const server = require("http").createServer(app);

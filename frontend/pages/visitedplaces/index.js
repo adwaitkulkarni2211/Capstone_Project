@@ -149,6 +149,7 @@ const VisitedPlaces = () => {
 
     //API call to update counter
     try {
+      console.log("it was here");
       const response = await fetch(
         `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
         {

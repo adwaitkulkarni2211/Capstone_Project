@@ -5,10 +5,6 @@ const PlacesCounter_Schema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  place_name: {
-    type: String,
-    required: true,
-  },
   reviews_counter:{
     type:Number,
     required: true,
