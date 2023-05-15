@@ -124,6 +124,7 @@ const VisitedPlaces = () => {
         tags: item.tags,
       };
     });
+
     console.log("tempvisitedplaces: ", tempVisitedPlaces);
     let history = { history: tempVisitedPlaces };
     //API call to add visited places to user history
@@ -144,6 +145,26 @@ const VisitedPlaces = () => {
     } catch (error) {
       setError("Error saving places to db");
       console.log("Error saving places to db: ", error);
+    }
+
+    //API call to update counter
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt.token}`,
+          },
+          body: JSON.stringify(history),
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      setError("Error updating places Counter to db");
+      console.log("Error updating places Counter to db: ", error);
     }
 
     //API call to save rating in the ratings collection
