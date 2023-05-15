@@ -1,6 +1,5 @@
 const User = require("../models/user");
-const Places_Counter = require("../models/placesCounter");
-const user = require("../models/user");
+
 exports.getUserById = (req, res, next, id) => {
   User.findById(id)
     .then((user) => {
@@ -21,6 +20,7 @@ exports.getUserById = (req, res, next, id) => {
     });
 };
 
+
 exports.addVisitedPlaces = async (req, res) => {
   try {
     const origHistory = req.profile.history;
@@ -29,65 +29,7 @@ exports.addVisitedPlaces = async (req, res) => {
 
     // logic to add newHistory to placesCounter schema 
 
-    newHistory.forEach(async (item) =>{
-      const place_id = item.placeid;
-      const rating = item.rating;
-      let tags_counter = 0; 
-      const tagCount = {};
-      tagCount["architecture"] = 0;
-      tagCount["nature"] = 0;
-      tagCount["trek"] = 0;
-      tagCount["religious"] = 0;
-      tagCount["historic"] = 0;
-      tagCount["themepark"] = 0;
-      tagCount["entertainment"] = 0;
-      const tags = item.tags;
-      tags.forEach((tag) =>{
-        tagCount[tag]++;
-        tags_counter++;
-      })
-
-      const exists = await Places_Counter.exists({place_id : place_id})
-
-        if(exists){
-          await Places_Counter.updateOne(
-            { _id: exists._id },
-            {
-              $inc: {
-                reviews_counter: 1,
-                tags_counter: tags_counter,
-                architecture_counter: tagCount["architecture"],
-                nature_counter: tagCount["nature"],
-                trek_counter: tagCount["trek"],
-                religious_counter: tagCount["religious"],
-                historic_counter: tagCount["historic"],
-                themePark_counter: tagCount["themepark"],
-                entertainment_counter: tagCount["entertainment"]
-              },
-              $set: {
-                average_rating: (exists.average_rating * exists.reviews_counter + rating) / (exists.reviews_counter + 1)
-              }
-            }
-          );
-
-        }else {
-          await Places_Counter.create({
-            place_id,
-            reviews_counter: 1,
-            average_rating: rating,
-            tags_counter,
-            nature_counter: tagCount["nature"],
-            trek_counter: tagCount["trek"],
-            religious_counter: tagCount["religious"],
-            historic_counter: tagCount["historic"],
-            themePark_counter: tagCount["themepark"],
-            entertainment_counter: tagCount["entertainment"],
-            architecture_counter: tagCount["architecture"]
-          });
-        }
-      
-
-    })
+    
 
     const origUser = await User.findByIdAndUpdate(
       { _id: req.profile._id },
