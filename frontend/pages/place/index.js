@@ -72,7 +72,6 @@ const place_description = () => {
   const [title, setTitle] = useState();
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState([]);
-  const [image_loading, setImageLoading] = useState(true);
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
     // setSuccess(false);
@@ -125,17 +124,20 @@ const place_description = () => {
       let place_description;
       if (placeData.hasOwnProperty("query") === false) {
         place_description = "No description available";
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       } else {
         const page = Object.values(placeData.query.pages).filter(
           (place) => name.includes(place.title) || place.title.includes(name)
         );
         console.log(page);
         place_description = page[0]?.extract ?? "No description available";
-        console.log(place_description);
         setTimeout(() => {
           setLoading(false);
         }, 5000);
       }
+      console.log(place_description);
       setPlaceDescription(place_description);
     };
     fetchData();
@@ -213,9 +215,7 @@ const place_description = () => {
 
       const img_url = data.results[0].urls.full;
       console.log(img_url);
-      setTimeout(() => {
-        setImageLoading(false);
-      }, 5000);
+
       setImages(img_url);
     }
 
