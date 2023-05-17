@@ -26,25 +26,27 @@ exports.updatePlacesCounters = async (req,res) =>{
       const exists = await Places_Counter.exists({place_id : place_id})
   
       try{  if(exists){
-           await Places_Counter.updateOne(
-            { _id: exists._id },
-            {
-              $inc: {
-                reviews_counter: 1,
-                tags_counter: tags_counter,
-                architecture_counter: tagCount["architecture"],
-                nature_counter: tagCount["nature"],
-                trek_counter: tagCount["trek"],
-                religious_counter: tagCount["religious"],
-                historic_counter: tagCount["historic"],
-                themePark_counter: tagCount["themePark"],
-                entertainment_counter: tagCount["entertainment"]
-              },
-              $set: {
-                average_rating: (exists.average_rating * exists.reviews_counter + rating) / (exists.reviews_counter + 1)
-              }
+        await Places_Counter.updateOne(
+          { _id: exists._id },
+          {
+            $inc: {
+              reviews_counter: 1,
+              tags_counter: tags_counter,
+              architecture_counter: tagCount["architecture"],
+              nature_counter: tagCount["nature"],
+              trek_counter: tagCount["trek"],
+              religious_counter: tagCount["religious"],
+              historic_counter: tagCount["historic"],
+              themePark_counter: tagCount["themePark"],
+              entertainment_counter: tagCount["entertainment"]
+            },
+            $set: {
+              average_rating: exists.reviews_counter !== 0
+                ? (exists.average_rating * exists.reviews_counter + rating) / (exists.reviews_counter + 1)
+                : rating
             }
-          );
+          }
+        );
   
         }else {
            await Places_Counter.create({

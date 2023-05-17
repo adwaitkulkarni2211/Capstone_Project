@@ -19,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import SuccessMessage from "@/components/messages/SuccessMessage";
 import CfRec from "@/components/cfRec/CfRec";
 import Navbar from "@/components/navbar/navbar";
+import SgaRec from "@/components/sgaRec/SgaRec";
 
 const style = {
   position: "absolute",
@@ -395,6 +396,7 @@ const place_description = () => {
                 </Box>
               </Modal>
               <CfRec name={name} />
+              <SgaRec/>
             </div>
           </div>
         </div>

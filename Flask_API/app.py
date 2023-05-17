@@ -76,18 +76,32 @@ def search(term):
     # Return the search results as JSON
     return jsonify(json_results)
 
-@app.route('/sga/<id>',methods=['GET'])
-def sga(id) :
+@app.route('/sga',methods=['GET'])
+def sga() :
     json_result = []
+    userid = request.args.get('userid', type=str)
+
+    id = ObjectId(userid)
+
+    print("userId: ", userid)
+    print("id", id)
 
     # search for the person with that id
-    user = db["User"].find_one({"_id": id})
+    user_list = list(db["users"].find({"_id": id}))
+    if not user_list:
+        return jsonify(json_result)
+
+    user = user_list[0]
+
+    print("user : ",user);
     size = 7
-    latitude = user['location']['lat']
-    longitude = user['location']['long']
+    latitude = int(user['location']['lat'])
+    longitude = int(user['location']['long'])
     distance = 5 #in kilometers
     user_array = np.zeros(size,dtype='float')    
     places_visited_subject_array = user['history']
+
+    print("it was here")
 
         #condition of not including the subject into sda
     if(len(places_visited_subject_array) < 5):
@@ -95,9 +109,10 @@ def sga(id) :
 
     for places in places_visited_subject_array:
         new_array = np.zeros(size,dtype=float)
-        place = db["Places_Counter"].find_one({"place_id":places["placeid"]})
+        place = db["places_counters"].find_one({"place_id":int(places["placeid"])})
+        
             #condition to not include a place in sga
-        if(place["review_counter"] < 5 and place["tags_counter"] < 5):
+        if(place["reviews_counter"] < 0 and place["tags_counter"] < 0):
                 continue
         place_rating = place["average_rating"]
         new_array[0] = place["nature_counter"]
@@ -120,23 +135,32 @@ def sga(id) :
 
 
     # make a graph for the user with "_id" as id
-
-
-
-
-    # get the list of users within 5km of distance
-    users_within_distance = db["User"].find({
-            "location": {
-                "$nearSphere": {
-                    "$geometry": {
-                        "type": "Point",
-                        "coordinates": [longitude, latitude]
-                    },
-                    "$maxDistance": distance * 1000  # Convert distance from kilometers to meters
+    users_within_distance = db["users"].find({
+        "$and": [
+            {
+                "location": {
+                    "$ne": None
+                }
+            },
+            {
+                "location": {
+                    "$nearSphere": {
+                        "$geometry": {
+                            "type": "Point",
+                            "coordinates": [longitude, latitude]
+                        },
+                        "$minDistance": distance * 1000  # Convert distance from kilometers to meters
+                    }
                 }
             }
-        }).limit(1000)
+        ]
+    }).limit(1000)
 
+   
+
+    users_within_distance = list(users_within_distance)
+    
+    print("users : ",users_within_distance)
 
 
     # get the list of places the user have visited for each user
@@ -146,8 +170,10 @@ def sga(id) :
     
     for user in users_within_distance:
         id = user["_id"]
-        places_visited_user = db["User"].find_one({"_id":id})
-        places_visited_array = places_visited_user['history']
+        places_visited_user = db["users"].find_one({"_id":id})
+        print("places_visited_user",places_visited_user)
+        print("\n")
+        places_visited_array = list(places_visited_user['history'])
 
         #condition of not including a person into the sga
         if(len(places_visited_array) < 5):
@@ -156,9 +182,10 @@ def sga(id) :
         mapped_array = np.zeros(size,dtype=float)
         for places in places_visited_array:
             new_array = np.zeros(size,dtype=float)
-            place = db["Places_Counter"].find_one({"place_id":places["placeid"]})
+            place = db["places_counters"].find_one({"place_id":places["placeid"]})
+
             #condition to not include a place in sga
-            if(place["review_counter"] < 5 and place["tags_counter"] < 5):
+            if(place is None or place["reviews_counter"] < 0 or place["tags_counter"] < 0):
                 continue
             place_rating = place["average_rating"]
             new_array[0] = place["nature_counter"]
@@ -199,8 +226,14 @@ def sga(id) :
 
     while(heap):
         rcmd = heapq.heappop(heap)
-        get_user = db["User"].find_one({"_id":rcmd[1]})
-        json_result.append(get_user.next())
+            
+        get_user = db["users"].find_one({"_id": rcmd[1]}, {"email": 1, "name": 1})
+        if get_user is not None:
+            get_user["_id"] = str(get_user["_id"])
+            json_result.append(get_user)
+
+
+    print("json_result : ",json_result)
 
     return jsonify(json_result)
 
