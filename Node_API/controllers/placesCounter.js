@@ -23,12 +23,21 @@ exports.updatePlacesCounters = async (req, res) => {
     });
 
     const exists = await Places_Counter.exists({ place_id: place_id });
+    console.log(exists);
 
+    
+    // 6915415
     try {
       if (exists) {
+        const place_counter = await Places_Counter.findOne({ _id: exists._id })
+        
         await Places_Counter.updateOne(
-          { _id: exists._id },
+          { place_id: place_id },
           {
+            $set: {
+              average_rating: ((parseInt(place_counter.average_rating) * parseInt(place_counter.reviews_counter)) + parseInt(rating))/parseInt(place_counter.reviews_counter + 1)
+              
+            },
             $inc: {
               reviews_counter: 1,
               tags_counter: tags_counter,
@@ -40,19 +49,12 @@ exports.updatePlacesCounters = async (req, res) => {
               themePark_counter: tagCount["themePark"],
               entertainment_counter: tagCount["entertainment"],
             },
-            $set: {
-              average_rating:
-                exists.reviews_counter !== 0
-                  ? (exists.average_rating * exists.reviews_counter + rating) /
-                    (exists.reviews_counter + 1)
-                  : rating,
-            },
           }
         );
       } else {
         await Places_Counter.create({
           place_id,
-          reviews_counter: 1,
+          reviews_counter: 1.00,
           average_rating: rating,
           tags_counter,
           nature_counter: tagCount["nature"],

@@ -148,26 +148,26 @@ const VisitedPlaces = () => {
     }
     console.log("history api call done, now moving on the save ratings");
 
-    //API call to update counter
-    // try {
-    //   const response = await fetch(
-    //     `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${jwt.token}`,
-    //       },
-    //       body: JSON.stringify(history),
-    //     }
-    //   );
-    //   console.log(response);
-    //   console.log("update places counter api call done");
-    // } catch (error) {
-    //   setError("Error updating places Counter to db");
-    //   console.log("Error updating places Counter to db: ", error);
-    // }
+    // API call to update counter
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt.token}`,
+          },
+          body: JSON.stringify(history),
+        }
+      );
+      console.log(response);
+      console.log("update places counter api call done");
+    } catch (error) {
+      setError("Error updating places Counter to db");
+      console.log("Error updating places Counter to db: ", error);
+    }
 
     console.log("update place counter api done now moving on to save rating");
 
