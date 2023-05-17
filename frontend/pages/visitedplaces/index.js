@@ -125,7 +125,7 @@ const VisitedPlaces = () => {
       };
     });
 
-    console.log("tempvisitedplaces: ", tempVisitedPlaces);
+    console.log("Starting history api call");
     let history = { history: tempVisitedPlaces };
     //API call to add visited places to user history
     try {
@@ -146,29 +146,33 @@ const VisitedPlaces = () => {
       setError("Error saving places to db");
       console.log("Error saving places to db: ", error);
     }
+    console.log("history api call done, now moving on the save ratings");
 
     //API call to update counter
-    try {
-      console.log("it was here");
-      const response = await fetch(
-        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt.token}`,
-          },
-          body: JSON.stringify(history),
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      setError("Error updating places Counter to db");
-      console.log("Error updating places Counter to db: ", error);
-    }
+    // try {
+    //   const response = await fetch(
+    //     `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${jwt.token}`,
+    //       },
+    //       body: JSON.stringify(history),
+    //     }
+    //   );
+    //   console.log(response);
+    //   console.log("update places counter api call done");
+    // } catch (error) {
+    //   setError("Error updating places Counter to db");
+    //   console.log("Error updating places Counter to db: ", error);
+    // }
+
+    console.log("update place counter api done now moving on to save rating");
 
     //API call to save rating in the ratings collection
+    console.log("tempvisitedplaces: ", tempVisitedPlaces);
     tempVisitedPlaces.forEach(async (place) => {
       try {
         const response = await fetch(
@@ -193,6 +197,8 @@ const VisitedPlaces = () => {
         console.log("Error saving rating to db: ", error);
       }
     });
+
+    console.log("save ratings api calls done.");
   };
 
   return (
