@@ -20,6 +20,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage";
 import CfRec from "@/components/cfRec/CfRec";
 import Navbar from "@/components/navbar/navbar";
 import SgaRec from "@/components/sgaRec/SgaRec";
+import PriceCalculator from "@/components/priceCalculator/PriceCalculator";
 
 const style = {
   position: "absolute",
@@ -286,6 +287,7 @@ const place_description = () => {
                   Create trip
                 </Button>
               </div>
+              <PriceCalculator lat={coordinate2} long={coordinate1} />
             </div>
             <div className="other-places">
               <Modal
@@ -396,7 +398,7 @@ const place_description = () => {
                 </Box>
               </Modal>
               <CfRec name={name} />
-              <SgaRec/>
+              <SgaRec />
             </div>
           </div>
         </div>
