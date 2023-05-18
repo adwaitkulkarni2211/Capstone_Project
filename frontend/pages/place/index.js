@@ -98,14 +98,7 @@ const place_description = () => {
   const { id } = router.query;
   const { name, kinds } = router.query;
   const { coordinate2, coordinate1 } = router.query;
-  // console.log(coordinate1, coordinate2);
-  var place_name = name;
-  var requestBody = {
-    latitude: coordinate1,
-    longitude: coordinate2,
-  };
 
-  console.log(requestBody);
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
@@ -123,25 +116,23 @@ const place_description = () => {
       );
       const placeData = await response.json();
       console.log(placeData);
-      let place_description;
       if (placeData.hasOwnProperty("query") === false) {
-        place_description = "No description available";
-        setTimeout(() => {
-          setLoading(false);
-        }, 5000);
+        setPlaceDescription("No description available");
       } else {
         const page = Object.values(placeData.query.pages).filter(
           (place) => name.includes(place.title) || place.title.includes(name)
         );
         console.log(page);
-        place_description = page[0]?.extract ?? "No description available";
-        setTimeout(() => {
-          setLoading(false);
-        }, 5000);
+
+        const place_description =
+          page[0]?.extract ?? "No description available";
+        console.log(place_description);
+        setPlaceDescription(place_description);
       }
-      console.log(place_description);
-      setPlaceDescription(place_description);
+
+      setLoading(false);
     };
+
     fetchData();
   }, [coordinate2, coordinate1]);
   const searchPeople = async () => {
@@ -211,10 +202,10 @@ const place_description = () => {
   useEffect(() => {
     async function fetchImages() {
       const response = await fetch(
-        `https://api.unsplash.com/search/photos?query=${name}&client_id=XM44am2p3ATTrgzI9rcuhy2EaRPp_2qoVbQOJ4rXjM4&w=500&h=500`
+        `https://api.unsplash.com/search/photos?query=${name}&client_id=XM44am2p3ATTrgzI9rcuhy2EaRPp_2qoVbQOJ4rXjM4`
       );
       const data = await response.json();
-
+      console.log(data);
       const img_url = data.results[0].urls.full;
       console.log(img_url);
 
