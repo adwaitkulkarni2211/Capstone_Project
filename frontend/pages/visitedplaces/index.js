@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import MultipleSelectChip from "@/components/mui_components/MultipleSelectChips";
 import ErrorMessage from "@/components/messages/ErrorMessage";
 import SuccessMessage from "@/components/messages/SuccessMessage";
+import { Box, Card, CardActions, CardContent, Chip, Grid } from "@mui/material";
 
 function FormDialog({ openButton, onClickOK }) {
   const [open, setOpen] = useState(false);
@@ -101,13 +102,39 @@ const VisitedPlaces = () => {
   };
 
   const handleAdd = (place, rating, tags) => {
+    //check if place already exists
+    const doesExist = visitedPlaces.find(
+      (item) => item.place.features__id === place.features__id
+    );
+    if (doesExist !== undefined) {
+      handleEdit(place, rating, tags);
+      return;
+    }
+
     const newVisitedPlaces = [
       ...visitedPlaces,
       { place: place, rating: rating, tags: tags },
     ];
     setVisitedPlaces(newVisitedPlaces);
-    // setSearchResults([]);
-    // setPlace("");
+  };
+
+  const handleEdit = (place, rating, tags) => {
+    const tempVisitedPlaces = [...visitedPlaces];
+
+    const placeToEdit = tempVisitedPlaces.find(
+      (item) => item.place.features__id === place.features__id
+    );
+    placeToEdit.rating = rating;
+    placeToEdit.tags = tags;
+
+    setVisitedPlaces(tempVisitedPlaces);
+  };
+
+  const handleDelete = (place) => {
+    const newVisitedPlaces = visitedPlaces.filter(
+      (item) => item.place.features__id !== place.features__id
+    );
+    setVisitedPlaces(newVisitedPlaces);
   };
 
   let jwt = "";
@@ -148,29 +175,6 @@ const VisitedPlaces = () => {
     }
     console.log("history api call done, now moving on the save ratings");
 
-    // API call to update counter
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt.token}`,
-          },
-          body: JSON.stringify(history),
-        }
-      );
-      console.log(response);
-      console.log("update places counter api call done");
-    } catch (error) {
-      setError("Error updating places Counter to db");
-      console.log("Error updating places Counter to db: ", error);
-    }
-
-    console.log("update place counter api done now moving on to save rating");
-
     //API call to save rating in the ratings collection
     console.log("tempvisitedplaces: ", tempVisitedPlaces);
     tempVisitedPlaces.forEach(async (place) => {
@@ -198,7 +202,30 @@ const VisitedPlaces = () => {
       }
     });
 
-    console.log("save ratings api calls done.");
+    console.log("save ratings api calls done moving on to place counter");
+
+    // API call to update counter
+    // try {
+    //   const response = await fetch(
+    //     `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${jwt.token}`,
+    //       },
+    //       body: JSON.stringify(history),
+    //     }
+    //   );
+    //   console.log(response);
+    //   console.log("update places counter api call done");
+    // } catch (error) {
+    //   setError("Error updating places Counter to db");
+    //   console.log("Error updating places Counter to db: ", error);
+    // }
+
+    // console.log("update place counter api done.");
   };
 
   return (
@@ -235,16 +262,72 @@ const VisitedPlaces = () => {
       <Typography variant="h5" gutterBottom>
         Visited Places:
       </Typography>
-      {visitedPlaces.length > 0 && (
-        <ul className="visited-places-list">
-          {visitedPlaces.map((place) => (
-            <li key={place.features__id}>
-              {place.place.features__properties__name} {place.rating}{" "}
-              {JSON.stringify(place.tags)}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div
+        style={{
+          paddingRight: "15px",
+          paddingLeft: "15px",
+          borderRadius: "8px",
+          marginTop: "10px",
+          marginLeft: "40px",
+        }}
+      >
+        <Box style={{ marginTop: "20px", marginBottom: "20px" }}>
+          <Grid container spacing={2}>
+            {visitedPlaces.map((place, index) => (
+              <Grid item spacing={2} key={index}>
+                <Card
+                  variant="outlined"
+                  style={{
+                    height: 250,
+                    width: 300,
+                    boxShadow: "0 0.6rem 1.2rem rgba(0, 0, 0, 0.075)",
+                  }}
+                  className="card-content"
+                >
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      {place.place.features__properties__name}
+                    </Typography>
+
+                    <div className="tags">
+                      {place.tags.map((kinds) => {
+                        return (
+                          <Chip
+                            label={kinds}
+                            color="primary"
+                            size="small"
+                            variant="outlined"
+                          />
+                        );
+                      })}
+                      <div className="rating" style={{ marginTop: "2.4rem" }}>
+                        <Typography variant="h6">
+                          Rating: {place.rating}
+                        </Typography>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardActions>
+                    <FormDialog
+                      openButton={"Edit"}
+                      onClickOK={(rating, tags) =>
+                        handleEdit(place.place, rating, tags)
+                      }
+                    />
+                    <Button
+                      variant="outlined"
+                      style={{ marginLeft: "1rem" }}
+                      onClick={() => handleDelete(place.place)}
+                    >
+                      Delete
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </div>
       <Button variant="contained" color="primary" onClick={handleSave}>
         Save Places
       </Button>
