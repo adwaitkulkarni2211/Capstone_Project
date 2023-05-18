@@ -3,40 +3,42 @@ const user = require("../models/user");
 
 exports.updatePlacesCounters = async (req, res) => {
   const newHistory = req.body.history;
+  try {
+    newHistory.forEach(async (item) => {
+      const place_id = item.placeid;
+      const rating = item.rating;
+      let tags_counter = 0;
+      const tagCount = {};
+      tagCount["architecture"] = 0;
+      tagCount["nature"] = 0;
+      tagCount["trek"] = 0;
+      tagCount["religious"] = 0;
+      tagCount["historic"] = 0;
+      tagCount["themePark"] = 0;
+      tagCount["entertainment"] = 0;
+      const tags = item.tags;
+      tags.forEach((tag) => {
+        tagCount[tag]++;
+        tags_counter++;
+      });
 
-  newHistory.forEach(async (item) => {
-    const place_id = item.placeid;
-    const rating = item.rating;
-    let tags_counter = 0;
-    const tagCount = {};
-    tagCount["architecture"] = 0;
-    tagCount["nature"] = 0;
-    tagCount["trek"] = 0;
-    tagCount["religious"] = 0;
-    tagCount["historic"] = 0;
-    tagCount["themePark"] = 0;
-    tagCount["entertainment"] = 0;
-    const tags = item.tags;
-    tags.forEach((tag) => {
-      tagCount[tag]++;
-      tags_counter++;
-    });
+      const exists = await Places_Counter.exists({ place_id: place_id });
+      console.log(exists);
 
-    const exists = await Places_Counter.exists({ place_id: place_id });
-    console.log(exists);
+      // 6915415
 
-    
-    // 6915415
-    try {
       if (exists) {
-        const place_counter = await Places_Counter.findOne({ _id: exists._id })
-        
+        const place_counter = await Places_Counter.findOne({ _id: exists._id });
+
         await Places_Counter.updateOne(
           { place_id: place_id },
           {
             $set: {
-              average_rating: ((parseInt(place_counter.average_rating) * parseInt(place_counter.reviews_counter)) + parseInt(rating))/parseInt(place_counter.reviews_counter + 1)
-              
+              average_rating:
+                (parseInt(place_counter.average_rating) *
+                  parseInt(place_counter.reviews_counter) +
+                  parseInt(rating)) /
+                parseInt(place_counter.reviews_counter + 1),
             },
             $inc: {
               reviews_counter: 1,
@@ -54,7 +56,7 @@ exports.updatePlacesCounters = async (req, res) => {
       } else {
         await Places_Counter.create({
           place_id,
-          reviews_counter: 1.00,
+          reviews_counter: 1,
           average_rating: rating,
           tags_counter,
           nature_counter: tagCount["nature"],
@@ -66,15 +68,15 @@ exports.updatePlacesCounters = async (req, res) => {
           architecture_counter: tagCount["architecture"],
         });
       }
+    });
 
-      res.json({
-        message: "successfully updated place counter",
-      });
-    } catch (e) {
-      console.log(e);
-      res.status(400).json({
-        error: e,
-      });
-    }
-  });
+    res.json({
+      message: "successfully updated place counter",
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      error: e,
+    });
+  }
 };

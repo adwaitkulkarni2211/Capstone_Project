@@ -154,7 +154,7 @@ const VisitedPlaces = () => {
 
     console.log("Starting history api call");
     let history = { history: tempVisitedPlaces };
-    //API call to add visited places to user history
+    // API call to add visited places to user history
     try {
       const response = await fetch(
         `http://localhost:3000/api/user/${jwt.user._id}/addVisitedPlaces`,
@@ -205,27 +205,27 @@ const VisitedPlaces = () => {
     console.log("save ratings api calls done moving on to place counter");
 
     // API call to update counter
-    // try {
-    //   const response = await fetch(
-    //     `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${jwt.token}`,
-    //       },
-    //       body: JSON.stringify(history),
-    //     }
-    //   );
-    //   console.log(response);
-    //   console.log("update places counter api call done");
-    // } catch (error) {
-    //   setError("Error updating places Counter to db");
-    //   console.log("Error updating places Counter to db: ", error);
-    // }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt.token}`,
+          },
+          body: JSON.stringify(history),
+        }
+      );
+      console.log(response);
+      console.log("update places counter api call done");
+    } catch (error) {
+      setError("Error updating places Counter to db");
+      console.log("Error updating places Counter to db: ", error);
+    }
 
-    // console.log("update place counter api done.");
+    console.log("update place counter api done.");
   };
 
   return (
