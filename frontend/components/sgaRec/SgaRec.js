@@ -4,6 +4,8 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
+const python = process.env.NEXT_PUBLIC_Flask_API;
+const node = process.env.NEXT_PUBLIC_Express_API;
 
 const SgaRec = () => {
   const [rec, setRec] = useState([]);
@@ -14,9 +16,11 @@ const SgaRec = () => {
         const parsedObject = JSON.parse(localStorage.getItem("jwt"));
         const userid = parsedObject.user._id;
 
-        const response = await fetch(`http://localhost:5000/sga?userid=${userid}`);
+        const response = await fetch(
+          `${python}/sga?userid=${userid}`
+        );
         const data = await response.json();
-        console.log("data is : ",data);
+        console.log("data is : ", data);
         setRec(data);
       } catch (error) {
         console.log(error);
@@ -26,9 +30,10 @@ const SgaRec = () => {
     fetchRec();
   }, []);
 
-  return (<div>
-    <div>Recommended friends for the trip</div>
-    <Grid container spacing={3}>
+  return (
+    <div>
+      <div>Recommended friends for the trip</div>
+      <Grid container spacing={3}>
         {rec.map((item, index) => (
           <Grid item spacing={2} key={index}>
             <Card
@@ -42,7 +47,6 @@ const SgaRec = () => {
             >
               <div>{item.name}</div>
               <Link
-                
                 href={{
                   pathname: "#",
                 }}
@@ -54,7 +58,7 @@ const SgaRec = () => {
         ))}
       </Grid>
     </div>
-  )
+  );
 };
 
 export default SgaRec;

@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
 import Navbar from "@/components/navbar/navbar";
+const python = process.env.NEXT_PUBLIC_Flask_API;
+const node = process.env.NEXT_PUBLIC_Express_API;
 
 const dashboard = () => {
   let userid = 1;
@@ -32,7 +34,7 @@ const dashboard = () => {
     userid = parsedObject.user._id;
     // console.log(parsedObject.user._id);
     const fetchRec = () => {
-      fetch(`http://localhost:5000/cbr?userid=${userid}`)
+      fetch(`${python}/cbr?userid=${userid}`)
         .then((res) => res.json())
         .then((data) => {
           setRec(data);
@@ -47,7 +49,7 @@ const dashboard = () => {
       const newData = [];
       for (const place of rec) {
         const response = await fetch(
-          `http://localhost:5000/place/${place.placeId}`
+          `${python}/place/${place.placeId}`
         );
         const placeData = await response.json();
         newData.push({ placeData });

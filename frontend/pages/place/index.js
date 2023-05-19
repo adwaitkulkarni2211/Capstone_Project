@@ -21,6 +21,8 @@ import CfRec from "@/components/cfRec/CfRec";
 import Navbar from "@/components/navbar/navbar";
 import SgaRec from "@/components/sgaRec/SgaRec";
 import PriceCalculator from "@/components/priceCalculator/PriceCalculator";
+const python = process.env.NEXT_PUBLIC_Flask_API;
+const node = process.env.NEXT_PUBLIC_Express_API;
 
 const style = {
   position: "absolute",
@@ -102,7 +104,7 @@ const place_description = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:5000/test?lat=${coordinate2}&long=${coordinate1}`,
+        `${python}/test?lat=${coordinate2}&long=${coordinate1}`,
         {
           method: "POST",
           headers: {
@@ -153,7 +155,7 @@ const place_description = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/user/${jwt.user._id}/getUsersByName`,
+        `${node}/api/user/${jwt.user._id}/getUsersByName`,
         requestOptions
       );
       const result = await response.json();
@@ -189,7 +191,7 @@ const place_description = () => {
     };
 
     fetch(
-      `http://localhost:3000/api/trip/${jwt.user._id}/${id}/createTrip`,
+      `${node}/api/trip/${jwt.user._id}/${id}/createTrip`,
       requestOptions
     )
       .then((response) => response.json())

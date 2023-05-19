@@ -58,6 +58,8 @@ const Navbar = () => {
   const [myTrips, setMyTrips] = React.useState([]);
 
   const router = useRouter();
+  const python=process.env.NEXT_PUBLIC_Flask_API
+  const node=process.env.NEXT_PUBLIC_Express_API
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -115,7 +117,7 @@ const Navbar = () => {
       e.preventDefault();
       const handleSearchPlace = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:5000/search/${place}`);
+          const response = await fetch(`${python}/search/${place}`);
           const data = await response.json();
           setResult(data);
         } catch (error) {
@@ -140,7 +142,7 @@ const Navbar = () => {
 
         try {
           const response = await fetch(
-            `http://localhost:3000/api/user/${jwt.user._id}/getUsersByName`,
+            `${node}/api/user/${jwt.user._id}/getUsersByName`,
             requestOptions
           );
           const results = await response.json();
@@ -183,7 +185,7 @@ const Navbar = () => {
     };
 
     fetch(
-      `http://localhost:3000/api/trip/${jwt.user._id}/addMembersToTrip`,
+      `${node}/api/trip/${jwt.user._id}/addMembersToTrip`,
       requestOptions
     )
       .then((response) => response.text())

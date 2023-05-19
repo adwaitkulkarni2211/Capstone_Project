@@ -10,6 +10,8 @@ import MultipleSelectChip from "@/components/mui_components/MultipleSelectChips"
 import ErrorMessage from "@/components/messages/ErrorMessage";
 import SuccessMessage from "@/components/messages/SuccessMessage";
 import { Box, Card, CardActions, CardContent, Chip, Grid } from "@mui/material";
+const python=process.env.NEXT_PUBLIC_Flask_API 
+const node=process.env.NEXT_PUBLIC_Express_API
 
 function FormDialog({ openButton, onClickOK }) {
   const [open, setOpen] = useState(false);
@@ -93,7 +95,7 @@ const VisitedPlaces = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/search/${place}`);
+      const response = await fetch(`${python}/search/${place}`);
       const data = await response.json();
       setSearchResults(data);
     } catch (error) {
@@ -157,7 +159,7 @@ const VisitedPlaces = () => {
     // API call to add visited places to user history
     try {
       const response = await fetch(
-        `http://localhost:3000/api/user/${jwt.user._id}/addVisitedPlaces`,
+        `${node}/api/user/${jwt.user._id}/addVisitedPlaces`,
         {
           method: "PUT",
           headers: {
@@ -180,7 +182,7 @@ const VisitedPlaces = () => {
     tempVisitedPlaces.forEach(async (place) => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/rating/${jwt.user._id}/${place.placeid}/saveRating`,
+          `${node}/api/rating/${jwt.user._id}/${place.placeid}/saveRating`,
           {
             method: "POST",
             headers: {
@@ -207,7 +209,7 @@ const VisitedPlaces = () => {
     // API call to update counter
     try {
       const response = await fetch(
-        `http://localhost:3000/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
+        `${node}/api/placesCounter/${jwt.user._id}/updatePlacesCounter`,
         {
           method: "POST",
           headers: {

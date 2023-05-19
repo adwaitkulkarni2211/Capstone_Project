@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 
 const CfRec = (props) => {
+  const python=process.env.NEXT_PUBLIC_Flask_API
   const [rec, setRec] = useState([]);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -15,7 +16,7 @@ const CfRec = (props) => {
         redirect: "follow",
       };
 
-      fetch(`http://127.0.0.1:5000/cf?location=${props.name}`, requestOptions)
+      fetch(`${python}/cf?location=${props.name}`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
           setRec(result);
@@ -31,7 +32,7 @@ const CfRec = (props) => {
       const newData = [];
       for (const place of rec) {
         const response = await fetch(
-          `http://localhost:5000/place/${place.placeId}`
+          `${python}/place/${place.placeId}`
         );
         const placeData = await response.json();
         newData.push({ placeData });

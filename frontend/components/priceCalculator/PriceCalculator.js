@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+const python = process.env.NEXT_PUBLIC_Flask_API;
+const node = process.env.NEXT_PUBLIC_Express_API;
 const pricePerKm = 2; // Updated price per km
 let jwt = "";
 
@@ -52,7 +54,7 @@ const PriceCalculator = (props) => {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/user/${jwt.user._id}/getUsersByName`,
+          `${node}/api/user/${jwt.user._id}/getUsersByName`,
           requestOptions
         );
         const result = await response.json();
