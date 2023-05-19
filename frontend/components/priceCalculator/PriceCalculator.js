@@ -77,7 +77,7 @@ const PriceCalculator = (props) => {
 
   return (
     <div>
-      The price is: Rs.{price.toFixed(0)},for a distance of:{" "}
+      The approximate price is: Rs.{price.toFixed(0)},for a distance of:{" "}
       {distance.toFixed(0)} km
     </div>
   );
