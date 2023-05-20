@@ -12,7 +12,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const ratingRoutes = require("./routes/ratings");
 const tripRoutes = require("./routes/trip");
-const updatePlacesCounterRoutes = require("./routes/placesCounter")
+const updatePlacesCounterRoutes = require("./routes/placesCounter");
 
 //DB connection
 mongoose
@@ -35,14 +35,14 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", ratingRoutes);
 app.use("/api", tripRoutes);
-app.use("/api", updatePlacesCounterRoutes)
+app.use("/api", updatePlacesCounterRoutes);
 
 //socket.io stuff
 const server = require("http").createServer(app);
 
 io.attach(server, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: "https://capstone-project-ecru.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
